@@ -8,7 +8,6 @@ public class Test {
         TJ.setPublicationDate("1964");
         System.out.println(TJ);
 
-
         Book Witcher = new Book("Witcher: Lady of the Lake", "Andrzej Sapkowski");
         Witcher.setStatus(Status.LENT_OUT);
         Witcher.setGenre("Action");
