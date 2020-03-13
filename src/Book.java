@@ -10,8 +10,8 @@ public class Book {
     public String toString() {
         return "Book{" +
                 "title='" + title + '\'' +
-                ", publication_date='" + publicationDate + '\'' +
                 ", author_name='" + authorName + '\'' +
+                ", publication_date='" + publicationDate + '\'' +
                 ", genre='" + genre + '\'' +
                 ", ISBN=" + ISBN +
                 ", status=" + status +
@@ -60,9 +60,7 @@ public class Book {
         return ISBN;
     }
 
-    public void setISBN(String ISBN) throws Exception {
-        this.ISBN = new ISBN(ISBN);
-    }
+    public void setISBN(String ISBN) throws Exception { this.ISBN = new ISBN(ISBN); }
 
     public Status getStatus() {
         return status;

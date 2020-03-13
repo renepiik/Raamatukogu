@@ -9,9 +9,10 @@ public class Test {
         System.out.println(TJ);
 
         Book Witcher = new Book("Witcher: Lady of the Lake", "Andrzej Sapkowski");
-        Witcher.setStatus(Status.LENT_OUT);
-        Witcher.setGenre("Action");
-        Witcher.setPublicationDate("1999");
+        //Witcher.setStatus(Status.LENT_OUT);
+        //Witcher.setGenre("Action");
+        //Witcher.setPublicationDate("1999");
+        System.out.println(Witcher);
 
 
         Library minuRaamatukogu = new Library("Minu Raamatukogu");
