@@ -1,9 +1,9 @@
-public class Main {
+public class Test {
+    public static void main(String[] args) throws Exception{
 
-    public static void main(String[] args) throws Exception {
-	    Book TJ = new Book("Tõde ja õigus IV", "Anton Hansen Tammsaare");
-	    TJ.setISBN("9789949664504");
-	    TJ.setStatus(Status.READING);
+        Book TJ = new Book("Tõde ja õigus IV", "Anton Hansen Tammsaare");
+        TJ.setISBN("9789949664504");
+        TJ.setStatus(Status.READING);
         TJ.setGenre("Draama");
         TJ.setPublicationDate("1964");
         System.out.println(TJ);
@@ -19,7 +19,6 @@ public class Main {
         minuRaamatukogu.addBook(TJ);
         minuRaamatukogu.addBook(Witcher);
         System.out.println(minuRaamatukogu);
-
 
     }
 }
