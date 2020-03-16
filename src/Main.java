@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,68 +8,65 @@ public class Main {
         ArrayList<Library> libraries = new ArrayList<>();
 
         while (runProgram) {
-            Scanner sc = new Scanner(System.in);
             Map<String, String> commands = new HashMap<>();
+            ConsoleInterface console = ConsoleInterface.getInstance();
 
             // siin peaks toimuma olemasolevate raamatukogude sisselugemine listi
+            // võib-olla liigutada see tulevikus ConsoleInterface constructorisse, aga pole veel tarvis
 
             commands.put("ll", "list libraries");
-            commands.put("nl", "new library");
+            commands.put("cl", "create library");
             commands.put("dl", "delete library");
             commands.put("sl", "select library");
             commands.put("quit", "quit program");
+            commands.put("lb", "list books");
+            commands.put("sb", "select book");
+            commands.put("cb", "create book");
+            commands.put("db", "delete book");
 
-            System.out.println("Sisesta käsklus või 'help' abi jaoks: ");
-            String kasutajaSisend = sc.nextLine();
+            String userInput = console.getCommand("Sisesta käsklus või 'help' abi jaoks: ");
 
-            switch (kasutajaSisend) {
+            switch (userInput) {
                 case "help": {
                     System.out.println(commands);
                     break;
                 }
                 case "quit": {
-                    System.out.println("Do you wish to quit the program? (y/n) ");
-                    if (sc.nextLine().equals("y") || sc.nextLine().equals("Y")) {
+                    if (console.quit()) {
                         runProgram = false;
+                        break;
                     }
-                    break;
                 }
                 case "ll": { // list libraries
-                    System.out.println(libraries);
+                    console.listLibraries();
                     break;
                 }
-                case "nl": { // new library
-                    boolean canCreate = true;
-
-                    System.out.println("Enter a name for the library: ");
-                    String libName = sc.nextLine();
-
-                    // check if library with same name already exists
-                    for (Library library : libraries) {
-                        if (library.getName().equals(libName)) {
-                            canCreate = false;
-                            break;
-                        }
-                    }
-
-                    if (canCreate) {
-                        libraries.add(new Library(libName));
-                        System.out.println("New library with name "+libName+" created");
-                    } else {
-                        System.out.println("Operation failed. Library with given name already exists");
-                    }
+                case "cl": { // create library
+                    console.createLibrary();
                     break;
                 }
                 case "dl": { // delete library
-                    System.out.println("Enter name of the library to delete: ");
-                    String libName = sc.nextLine();
-                    System.out.println("Do you wish to delete the library '"+libName+"'? (y/n)");
-                    if (sc.nextLine().equals("y") || sc.nextLine().equals("Y")) {
-                        libraries.removeIf(library -> library.getName().equals(libName));
-                    }
+                    console.deleteLibrary();
                     break;
                 }
                 case "sl": { // select library
+                    console.selectLibrary();
+                    break;
+                }
+                case "sb": {
+                    console.selectBook();
+                    break;
+                }
+                case "lb": {
+                    console.listBooks();
+                    break;
+                }
+                case "db": {
+                    console.deleteBook();
+                    break;
+                }
+                case "cb": {
+                    console.createBook();
                     break;
                 }
             }
