@@ -35,6 +35,7 @@ class Startup {
                 Library tempLib = new Library(scanner.nextLine());//Library nimi
                 List<Book> tempBooks = new ArrayList<>();
 
+
                 while (scanner.hasNextLine()) {
                     String rida = scanner.nextLine();
                     String[] data = rida.split(";");
