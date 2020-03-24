@@ -1,7 +1,7 @@
 public class Book {
     private String title;
-    private String publicationDate;
     private String authorName;
+    private String publicationDate;
     private String genre;
     private ISBN ISBN;
     private Status status;
@@ -22,6 +22,15 @@ public class Book {
     public Book(String title, String authorName) {
         this.title = title;
         this.authorName = authorName;
+    }
+
+    public Book(String title, String authorName, String publicationDate, String genre, ISBN ISBN, Status status) {
+        this.title = title;
+        this.authorName = authorName;
+        this.publicationDate = publicationDate;
+        this.genre = genre;
+        this.ISBN = ISBN;
+        this.status = status;
     }
 
     public String getTitle() {

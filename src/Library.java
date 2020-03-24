@@ -49,9 +49,8 @@ public class Library {
     }
 
     public void save() throws IOException {
-
-        PrintWriter writer = new PrintWriter(this.name + ".txt", StandardCharsets.UTF_8);
-
+        PrintWriter writer = new PrintWriter(name + ".csv", StandardCharsets.UTF_8);
+        writer.println(name);
         for (Book book : this.books) {
             String data = "@" + //tähistab uue raamatu algust
                     book.getTitle() + ";" +
@@ -63,8 +62,7 @@ public class Library {
             writer.println(data);
             System.out.println(data);
         }
-
         writer.close();
-        System.out.println("Raamatukogu " + this.name + " salvestatud.");
+        System.out.println("Raamatukogu " + name + " salvestatud.");
     }
 }
