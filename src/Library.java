@@ -1,3 +1,8 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,5 +46,25 @@ public class Library {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void save() throws IOException {
+
+        PrintWriter writer = new PrintWriter(this.name + ".txt", StandardCharsets.UTF_8);
+
+        for (Book book : this.books) {
+            String data = "@" + //tähistab uue raamatu algust
+                    book.getTitle() + ";" +
+                    book.getAuthorName() + ";" +
+                    book.getPublicationDate() + ";" +
+                    book.getGenre() + ";" +
+                    book.getISBN() + ";" +
+                    book.getStatus(); //salvestab iga raamatu andmed hiljem hästi loetavasse formaati
+            writer.println(data);
+            System.out.println(data);
+        }
+
+        writer.close();
+        System.out.println("Raamatukogu " + this.name + " salvestatud.");
     }
 }

@@ -6,20 +6,22 @@ public class Test {
         TJ.setStatus(Status.READING);
         TJ.setGenre("Draama");
         TJ.setPublicationDate("1964");
-        System.out.println(TJ);
+        //System.out.println(TJ);
 
         Book Witcher = new Book("Witcher: Lady of the Lake", "Andrzej Sapkowski");
         //Witcher.setStatus(Status.LENT_OUT);
         //Witcher.setGenre("Action");
         //Witcher.setPublicationDate("1999");
-        System.out.println(Witcher);
+        //System.out.println(Witcher);
 
 
         Library minuRaamatukogu = new Library("Minu Raamatukogu");
 
-        minuRaamatukogu.addBook(TJ);
+        //minuRaamatukogu.addBook(TJ);
         minuRaamatukogu.addBook(Witcher);
-        System.out.println(minuRaamatukogu);
+        //System.out.println(minuRaamatukogu);
+
+        minuRaamatukogu.save();
 
     }
 }
