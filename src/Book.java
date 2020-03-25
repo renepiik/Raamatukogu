@@ -8,20 +8,17 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                ", author_name='" + authorName + '\'' +
-                ", publication_date='" + publicationDate + '\'' +
-                ", genre='" + genre + '\'' +
-                ", ISBN=" + ISBN +
-                ", status=" + status +
-                '}';
+        return status+": "+title+", "+authorName+"\n("+publicationDate+", "+genre+", ISBN: "+ISBN+")";
     }
 
     // constructors
-    public Book(String title, String authorName) {
+    public Book(String title, String authorName) throws Exception {
         this.title = title;
         this.authorName = authorName;
+        this.status = Status.DEFAULT;
+        this.genre = "Romaan";
+        this.publicationDate = "0000";
+        this.ISBN = new ISBN("0000000000");
     }
 
     public Book(String title, String authorName, String publicationDate, String genre, ISBN ISBN, Status status) {

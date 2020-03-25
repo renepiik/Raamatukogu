@@ -15,26 +15,23 @@ class Startup {
         //.csv failide lugemine
         List<String> csvFiles = new ArrayList<>();
 
-        File dir = new File(System.getProperty("user.dir"));
+        File dir = new File("./libs/");
         for (File file : Objects.requireNonNull(dir.listFiles())) {
             if (file.getName().endsWith((".csv"))) {
                 csvFiles.add(file.getName());
             }
         }
-        //System.out.println(csvFiles);
 
         ArrayList<Library> allLibs = new ArrayList<>();
 
         //Library objektide genereerimine Arraylisti
         for (String csvFile : csvFiles) {
-
             try {
-                File fail = new File(csvFile);
+                File fail = new File("./libs/"+csvFile);
                 Scanner scanner = new Scanner(fail);
 
                 Library tempLib = new Library(scanner.nextLine());//Library nimi
                 List<Book> tempBooks = new ArrayList<>();
-
 
                 while (scanner.hasNextLine()) {
                     String rida = scanner.nextLine();
@@ -44,7 +41,7 @@ class Startup {
                     Book tempBook = new Book(data[0].substring(1), data[1]);
                     if (!data[2].equals("null")) tempBook.setPublicationDate(data[2]);
                     if (!data[3].equals("null")) tempBook.setGenre(data[3]);
-                    if (!data[4].equals("null")) tempBook.setISBN(data[4].substring(1, 14));
+                    if (!data[4].equals("null")) tempBook.setISBN(data[4]);
                     if (!data[5].equals("null")) tempBook.setStatus(Status.valueOf(data[5]));
                     tempBooks.add(tempBook);//Lisamine raamatute Listi
                 }

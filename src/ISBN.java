@@ -8,7 +8,7 @@ public class ISBN {
 
     @Override
     public String toString() {
-        return "'"+isbn+"'";
+        return isbn;
     }
 
     public String getIsbn() {

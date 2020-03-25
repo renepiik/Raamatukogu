@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -18,15 +19,15 @@ public class ConsoleInterface {
     private static ConsoleInterface instance = null;
     private static Scanner scanner;
 
-    private ConsoleInterface() {
+    private ConsoleInterface() throws Exception {
         this.currentPath = "";
         scanner = new Scanner(System.in);
         // should read libraries from a local file here
         // if libraries are not read, creates new empty list of libraries
-        this.libraries = new ArrayList<>();
+        this.libraries = Startup.Initialize();
     }
 
-    public static ConsoleInterface getInstance() {
+    public static ConsoleInterface getInstance() throws Exception {
         if (instance == null) instance = new ConsoleInterface();
         return instance;
     }
@@ -50,9 +51,17 @@ public class ConsoleInterface {
         return scanner.nextLine();
     }
 
-    public boolean quit() {
+    public boolean quit() throws IOException {
         String input = this.getCommand("Do you wish to quit the program? (y/n) ");
-        return input.equals("y") || input.equals("Y");
+        if (input.equals("y") || input.equals("Y")) {
+            // siin salvestatakse kõik sisestatud info
+            for (Library library : this.libraries) {
+                library.save();
+            }
+
+            return true;
+        }
+        return false;
     }
 
     /*
@@ -186,7 +195,7 @@ public class ConsoleInterface {
         }
     }
 
-    public void createBook() {
+    public void createBook() throws Exception {
         if (this.selectedLibrary != null) {
             boolean canCreate = true;
 
@@ -213,7 +222,9 @@ public class ConsoleInterface {
 
     public void listBooks() {
         if (this.selectedLibrary != null) {
-            System.out.println(this.selectedLibrary);
+            for (Book book : this.selectedLibrary.getBooks()) {
+                System.out.println(book);
+            }
         }
     }
 
@@ -266,8 +277,11 @@ public class ConsoleInterface {
     }
 
     // Math.Random funktsiooni kasutus
-    public Book getRandomBook(Library library) {
-        int bookIndex = (int) Math.floor(Math.random() * library.getBooks().size());
-        return library.getBooks().get(bookIndex);
+    public Book getRandomBook() throws Exception {
+        if (this.selectedLibrary != null) {
+            int bookIndex = (int) Math.floor(Math.random() * this.selectedLibrary.getBooks().size());
+            return this.selectedLibrary.getBooks().get(bookIndex);
+        }
+        return new Book("", "");
     }
 }

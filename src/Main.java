@@ -3,16 +3,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         boolean runProgram = true;
         ArrayList<Library> libraries = new ArrayList<>();
 
         while (runProgram) {
             Map<String, String> commands = new HashMap<>();
             ConsoleInterface console = ConsoleInterface.getInstance();
-
-            // siin peaks toimuma olemasolevate raamatukogude sisselugemine listi
-            // võib-olla liigutada see tulevikus ConsoleInterface constructorisse, aga pole veel tarvis
           
             commands.put("ll", "list libraries");
             commands.put("cl", "create library");
@@ -69,9 +66,11 @@ public class Main {
                     console.createBook();
                     break;
                 }
+                case "rb": {
+                    System.out.println(console.getRandomBook());
+                    break;
+                }
             }
         }
-
-        // pärast while loopi tuleks kõik uus info sisse lugeda mõnda faili ja see salvestada
     }
 }

@@ -1,7 +1,4 @@
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +50,8 @@ public class Library {
     }
 
     public void save() throws IOException {
-        PrintWriter writer = new PrintWriter(name + ".csv", StandardCharsets.UTF_8);
+        File libraryFile = new File("./libs/"+name + ".csv");
+        PrintWriter writer = new PrintWriter(libraryFile, StandardCharsets.UTF_8);
         writer.println(name);
         for (Book book : this.books) {
             String data = "@" + //tähistab uue raamatu algust
@@ -64,9 +62,8 @@ public class Library {
                     book.getISBN() + ";" +
                     book.getStatus(); //salvestab iga raamatu andmed hiljem hästi loetavasse formaati
             writer.println(data);
-            System.out.println(data);
         }
         writer.close();
-        System.out.println("Raamatukogu " + name + " salvestatud.");
+        System.out.println("Library '" + name + "' saved.");
     }
 }
