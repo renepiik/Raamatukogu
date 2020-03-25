@@ -13,7 +13,7 @@ public class Main {
 
             // siin peaks toimuma olemasolevate raamatukogude sisselugemine listi
             // võib-olla liigutada see tulevikus ConsoleInterface constructorisse, aga pole veel tarvis
-
+          
             commands.put("ll", "list libraries");
             commands.put("cl", "create library");
             commands.put("dl", "delete library");
