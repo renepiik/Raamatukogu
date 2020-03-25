@@ -40,6 +40,10 @@ public class Library {
         this.books.addAll(newBooks);
     }
 
+    public void removeBook(Book book) {
+        this.books.remove(book);
+    }
+
     public String getName() {
         return name;
     }
