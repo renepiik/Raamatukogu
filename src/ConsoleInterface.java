@@ -52,8 +52,8 @@ public class ConsoleInterface {
     }
 
     public boolean quit() throws IOException {
-        String input = this.getCommand("Do you wish to quit the program? (y/n) ");
-        if (input.equals("y") || input.equals("Y")) {
+        String input = this.getCommand("Kas te soovite programmist lahkuda? (jah/ei)");
+        if (input.equals("jah") || input.equals("JAH")) {
             // siin salvestatakse kõik sisestatud info
             for (Library library : this.libraries) {
                 library.save();
@@ -80,7 +80,7 @@ public class ConsoleInterface {
 
     public void selectLibrary() {
         boolean canOpen = false;
-        String libName = this.getCommand("Enter the name of the library: ");
+        String libName = this.getCommand( "Sisesatage raamatukogu nimi: ");
         Library selectedLibrary = null;
 
         // check if library with given name exists
@@ -102,7 +102,7 @@ public class ConsoleInterface {
     public void createLibrary() {
         boolean canCreate = true;
 
-        String libName = this.getCommand("Enter a name for the library: ");
+        String libName = this.getCommand("Sisestage loodava raamatukogu nimi: ");
 
         // check if library with same name already exists
         for (Library library : this.libraries) {
@@ -114,9 +114,9 @@ public class ConsoleInterface {
 
         if (canCreate) {
             this.libraries.add(new Library(libName));
-            System.out.println("New library with name "+libName+" created");
+            System.out.println("Uus raamatukogu nimega "+libName+" on loodud");
         } else {
-            System.out.println("Operation failed. Library with given name already exists");
+            System.out.println("Tekkis tõrge, sellise nimega raamatukogu on juba olemas.");
         }
     }
 
@@ -128,9 +128,9 @@ public class ConsoleInterface {
 
     public void deleteLibrary() {
         if (this.selectedLibrary != null) {
-            String deleteCommand = this.getCommand("Do you wish to delete the library '"+this.selectedLibrary.getName()+"'? (y/n)");
+            String deleteCommand = this.getCommand("Kas te soovite eemaldada raamatukogu '"+this.selectedLibrary.getName()+"'? (jah/ei)");
 
-            if (deleteCommand.equals("y") || deleteCommand.equals("Y")) {
+            if (deleteCommand.equals("jah") || deleteCommand.equals("JAH")) {
                 this.libraries.removeIf(library -> library.getName().equals(this.selectedLibrary.getName()));
             }
 
@@ -164,7 +164,7 @@ public class ConsoleInterface {
     public void selectBook() {
         if (this.selectedLibrary != null) {
             boolean canOpen = false;
-            String bookName = this.getCommand("Enter the title of the book: ");
+            String bookName = this.getCommand("Sisestage raamatu pealkiri: ");
             Book selectedBook;
             ArrayList<Book> booksWithSameTitle = new ArrayList<>();
 
@@ -181,12 +181,12 @@ public class ConsoleInterface {
                     updatePath(bookName, OperationType.BOOK);
                 }
                 else {
-                    System.out.println("Which of these books do you wish to open? ");
+                    System.out.println("Millise raamatu te soovite avada? ");
                     for (int i = 0; i < booksWithSameTitle.size(); i++) {
                         System.out.println(i +": "+booksWithSameTitle.get(i));
                     }
 
-                    int bookIndex = Integer.parseInt(this.getCommand("Write the number in front of the book here: "));
+                    int bookIndex = Integer.parseInt(this.getCommand("Sisestage raamatu eesolev number siia: "));
                     selectedBook = booksWithSameTitle.get(bookIndex);
                     this.selectedBook = selectedBook;
                     this.updatePath(selectedBook.getTitle(), OperationType.BOOK);
@@ -199,7 +199,7 @@ public class ConsoleInterface {
         if (this.selectedLibrary != null) {
             boolean canCreate = true;
 
-            String bookName = this.getCommand("Enter a title for the new Book: ");
+            String bookName = this.getCommand("Sisestage loodava raamatu pealkiri: ");
 
             // check if book with same name already exists
             for (Book book : this.selectedLibrary.getBooks()) {
@@ -209,13 +209,13 @@ public class ConsoleInterface {
                 }
             }
 
-            String authorName = this.getCommand("Enter the author's name: ");
+            String authorName = this.getCommand("Sisestage raamatu autori nimi: ");
 
             if (canCreate) {
                 this.selectedLibrary.addBook(new Book(bookName, authorName));
-                System.out.println("New book with title "+bookName+" and author "+authorName+" created");
+                System.out.println("Uus raamat pealkirjaga "+bookName+" ja autoriga "+authorName+" on loodud");
             } else {
-                System.out.println("Operation failed. Book with given title already exists");
+                System.out.println("Tekkis tõrge, sellise pealkirjaga raamat on juba olemas");
             }
         }
     }
@@ -232,7 +232,7 @@ public class ConsoleInterface {
         if (this.selectedLibrary != null && this.selectedBook != null) {
             boolean canDelete = false;
             ArrayList<Book> booksWithSameTitle = new ArrayList<>();
-            String bookName = this.getCommand("Enter title of the book to delete: ");
+            String bookName = this.getCommand("Sisestage raamatu pealkiri, mille soovite eemaldada: ");
 
             // check if book with given name exists
             for (Book book : this.selectedLibrary.getBooks()) {
@@ -244,29 +244,29 @@ public class ConsoleInterface {
 
             if (canDelete) {
                 if (booksWithSameTitle.size() == 1) {
-                    String deleteCommand = this.getCommand("Do you wish to delete the book '"+bookName+"'? (y/n)");
+                    String deleteCommand = this.getCommand("Kas te soovite eemaldada raamatu pealkirjaga '"+bookName+"'? (jah/ei)");
 
-                    if (deleteCommand.equals("y") || deleteCommand.equals("Y")) {
+                    if (deleteCommand.equals("jah") || deleteCommand.equals("JAH")) {
                         this.selectedLibrary.getBooks().removeIf(book -> book.getTitle().equals(bookName));
                     }
                 }
                 else {
-                    System.out.println("Which of these books do you wish to delete? ");
+                    System.out.println("Millise raamatu te soovite eemaldada? ");
                     for (int i = 0; i < booksWithSameTitle.size(); i++) {
                         System.out.println(i +": "+booksWithSameTitle.get(i));
                     }
 
-                    int bookIndex = Integer.parseInt(this.getCommand("Write the number in front of the book here: "));
-                    String deleteCommand = this.getCommand("Do you wish to delete the book '"+bookIndex+": "+booksWithSameTitle.get(bookIndex)+"'? (y/n)");
+                    int bookIndex = Integer.parseInt(this.getCommand("Sisestage raamatu ees olev number siia: "));
+                    String deleteCommand = this.getCommand("Kas te soovite eemaldada raamatu '"+bookIndex+": "+booksWithSameTitle.get(bookIndex)+"'? (jah/ei)");
 
-                    if (deleteCommand.equals("y") || deleteCommand.equals("Y")) {
+                    if (deleteCommand.equals("jah") || deleteCommand.equals("JAH")) {
                         this.selectedLibrary.removeBook(booksWithSameTitle.get(bookIndex));
                         this.selectedBook = null;
                         this.updatePath(this.selectedLibrary.getName(), OperationType.LIBRARY);
                     }
                 }
             } else {
-                System.out.println("Book with given name does not exist.");
+                System.out.println("Sellise nimega raamatut ei ole olemas");
             }
         }
     }

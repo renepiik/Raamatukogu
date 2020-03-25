@@ -64,6 +64,6 @@ public class Library {
             writer.println(data);
         }
         writer.close();
-        System.out.println("Library '" + name + "' saved.");
+        System.out.println("Raamatukogu '" + name + "' salvestatud.");
     }
 }
