@@ -1,7 +1,7 @@
 public class Book {
     private String title;
-    private String publicationDate;
     private String authorName;
+    private String publicationDate;
     private String genre;
     private ISBN ISBN;
     private Status status;
@@ -10,8 +10,8 @@ public class Book {
     public String toString() {
         return "Book{" +
                 "title='" + title + '\'' +
-                ", publication_date='" + publicationDate + '\'' +
                 ", author_name='" + authorName + '\'' +
+                ", publication_date='" + publicationDate + '\'' +
                 ", genre='" + genre + '\'' +
                 ", ISBN=" + ISBN +
                 ", status=" + status +
@@ -22,6 +22,15 @@ public class Book {
     public Book(String title, String authorName) {
         this.title = title;
         this.authorName = authorName;
+    }
+
+    public Book(String title, String authorName, String publicationDate, String genre, ISBN ISBN, Status status) {
+        this.title = title;
+        this.authorName = authorName;
+        this.publicationDate = publicationDate;
+        this.genre = genre;
+        this.ISBN = ISBN;
+        this.status = status;
     }
 
     public String getTitle() {
@@ -60,9 +69,7 @@ public class Book {
         return ISBN;
     }
 
-    public void setISBN(String ISBN) throws Exception {
-        this.ISBN = new ISBN(ISBN);
-    }
+    public void setISBN(String ISBN) throws Exception { this.ISBN = new ISBN(ISBN); }
 
     public Status getStatus() {
         return status;
