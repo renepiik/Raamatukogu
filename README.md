@@ -41,7 +41,7 @@ Kirjutas programmi algse versiooni jaoks klassid ISBN, _Library_ ja _Book_. Impl
 Kirjutas klassi _Startup_, ühtlustas keeleliselt kasutajaga suhtlemise, implementeeris andmete salvestamise ja lugemise .csv formaadis.
 
 ## Mured
-Projekti tegemisel tuli ise otsida infot selle kohta, kuidas andmeid salvestada ja lugeda. Kasuks tuli ka _enum_ kasutamine ja _singleton_ tüüpi klassi kasutamine, millest polnud loengutes eriti palju juttu.
+Projekti tegemisel tuli ise otsida infot selle kohta, kuidas andmeid salvestada ja hiljem normaalsel kujul sisselugeda. Kasuks tuli ka _enum_ kasutamine ja _singleton_ tüüpi klassi kasutamine, millest polnud loengutes eriti palju juttu.
 
 ## Hinnang
 Tööga saime hästi hakkama, ühtegi ületamatut muret ei tekkinud. Tulevikus saaks kindlasti kirjutada juurde graafilise liidese. Samuti tuleks mõelda pisut, kuidas teha raamatute (raamatukogude) lisamist ja andmete muutmist kasutajale mugavamaks.
