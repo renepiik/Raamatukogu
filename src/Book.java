@@ -8,17 +8,24 @@ public class Book {
 
     @Override
     public String toString() {
-        return status+": "+title+", "+authorName+"\n("+publicationDate+", "+genre+", ISBN: "+ISBN+")";
+        StringBuilder sb = new StringBuilder();
+        sb.append(status.toString().toLowerCase()).append(": ").append(title).append(", ").append(authorName);
+        if (this.publicationDate != null || this.genre != null || this.ISBN != null) {
+            sb.append("(");
+            if (this.publicationDate != null) sb.append(this.publicationDate);
+            if (this.genre != null) sb.append(", ").append(this.genre);
+            if (this.ISBN != null) sb.append(", ISBN: ").append(this.ISBN);
+            sb.append(")");
+        }
+
+        return sb.toString();
     }
 
     // constructors
-    public Book(String title, String authorName) throws Exception {
+    public Book(String title, String authorName) {
         this.title = title;
         this.authorName = authorName;
         this.status = Status.DEFAULT;
-        this.genre = "Romaan";
-        this.publicationDate = "0000";
-        this.ISBN = new ISBN("0000000000");
     }
 
     public Book(String title, String authorName, String publicationDate, String genre, ISBN ISBN, Status status) {
