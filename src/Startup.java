@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 class Startup {
 
-    public static ArrayList<Library> Initialize() throws Exception{
+    public static ArrayList<Library> Initialize() {
         //Loeb .csv failid sisse, moodustab nende sisudest Library objektid ja koondab need ArrayListi
         //Väljastab Library objektide ArrayListi
 
