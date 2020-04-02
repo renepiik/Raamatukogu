@@ -25,7 +25,7 @@ public class ConsoleInterface {
         this.libraries = Startup.Initialize();
     }
 
-    public static ConsoleInterface getInstance() throws Exception {
+    public static ConsoleInterface getInstance() {
         if (instance == null) instance = new ConsoleInterface();
         return instance;
     }
@@ -237,7 +237,7 @@ public class ConsoleInterface {
         }
     }
 
-    public void createBook() throws Exception {
+    public void createBook() {
         if (this.operationType == OperationType.LIBRARY) {
             boolean create = true;
             String bookName = this.getCommand("Sisestage loodava raamatu pealkiri: ");
@@ -258,7 +258,7 @@ public class ConsoleInterface {
         }
     }
 
-    public void createBookWithTitleAndAuthor(String title, String author) throws Exception {
+    public void createBookWithTitleAndAuthor(String title, String author) {
         if (this.operationType == OperationType.LIBRARY) {
             this.selectedLibrary.addBook(new Book(title, author));
             System.out.println("Uus raamat pealkirjaga "+title+" ja autoriga "+author+" on loodud");
