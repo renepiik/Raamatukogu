@@ -6,6 +6,10 @@ public class ISBN {
         else throw new Exception();
     }
 
+    public ISBN() {
+        this.isbn = "";
+    }
+
     @Override
     public String toString() {
         return isbn;

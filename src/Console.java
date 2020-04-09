@@ -8,6 +8,7 @@ public class Console {
         ArrayList<Library> libraries = new ArrayList<>();
         Map<String, String> commands = new HashMap<>();
         ConsoleInterface console = ConsoleInterface.getInstance();
+        System.out.println("Sisesta käsklus või 'help' abi jaoks");
 
         // ingliskeelsed juhised programmi kasutamiseks
         commands.put("list, ls", "list based on context");
@@ -26,7 +27,7 @@ public class Console {
         commands.put("quit", "quit program");
 
         while (runProgram) {
-            String[] userInput = console.getCommand("Sisesta käsklus või 'help' abi jaoks: ").split(" ");
+            String[] userInput = console.getCommand("").split(" ");
 
             switch (userInput[0]) {
                 case "help": {

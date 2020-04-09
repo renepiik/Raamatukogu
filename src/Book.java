@@ -8,15 +8,19 @@ public class Book {
 
     @Override
     public String toString() {
+        // status, title, authorName, publicationDate, genre, ISBN: isbn
+
         StringBuilder sb = new StringBuilder();
-        sb.append(status.toString().toLowerCase()).append(": ").append(title).append(", ").append(authorName);
-        if (this.publicationDate != null || this.genre != null || this.ISBN != null) {
-            sb.append("(");
-            if (this.publicationDate != null) sb.append(this.publicationDate);
-            if (this.genre != null) sb.append(", ").append(this.genre);
-            if (this.ISBN != null) sb.append(", ISBN: ").append(this.ISBN);
-            sb.append(")");
-        }
+
+        sb.append(status.toString().toLowerCase());
+        sb.append(", ");
+        sb.append(title);
+        sb.append(", ");
+        sb.append(authorName);
+
+        if (!this.publicationDate.equals("")) sb.append(", ").append(this.publicationDate);
+        if (!this.genre.equals("")) sb.append(", ").append(this.genre);
+        if (!this.ISBN.toString().equals("")) sb.append(", ISBN: ").append(this.ISBN);
 
         return sb.toString();
     }
@@ -26,6 +30,9 @@ public class Book {
         this.title = title;
         this.authorName = authorName;
         this.status = Status.DEFAULT;
+        this.genre = "";
+        this.publicationDate = "";
+        this.ISBN = new ISBN();
     }
 
     public Book(String title, String authorName, String publicationDate, String genre, ISBN ISBN, Status status) {

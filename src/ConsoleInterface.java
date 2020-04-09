@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 // singleton class for ConsoleInterface because there only ever needs to be one instance of the class
@@ -42,7 +43,7 @@ public class ConsoleInterface {
     }
 
     public String getCommand(String query) {
-        System.out.println(query);
+        if (!query.equals("")) System.out.println(query);
         System.out.print("~/"+this.currentPath+"$ ");
         return scanner.nextLine();
     }
@@ -267,8 +268,43 @@ public class ConsoleInterface {
 
     public void listBooks() {
         if (this.operationType == OperationType.LIBRARY) {
+            // status, title, authorName, publicationDate, genre, ISBN: isbn
+
+            // loon uue ArrayListi String[] arraydest, et arvutada välja printimiseks sobilike tulpade laiusi
+            ArrayList<String[]> data = new ArrayList<>();
+
+            // header
+            data.add(new String[]{"Staatus", "Pealkiri", "Autor", "Ilmumisaeg", "Žanr", "ISBN"});
+
+            // iga raamat on üks data rida
             for (Book book : this.selectedLibrary.getBooks()) {
-                System.out.println(book);
+                String[] row = new String[]{book.getStatus().toString(), book.getTitle(), book.getAuthorName(), book.getPublicationDate(), book.getGenre(), book.getISBN().toString()};
+                data.add(row);
+            }
+
+            // rea pikkus ja ridade arv
+            int col = data.get(0).length;
+            int row = data.size();
+
+            // Array, kuhu lisatakse iga tulba suurim pikkus
+            int[] maxWidth = new int[col];
+
+            // data käiakse läbi ridahaaval, iga rea juures kontrollitakse laiusi maxWidth[i] vastu
+            for (String[] rowData : data) {
+                for (int i = 0; i < col; i++) {
+                    if (maxWidth[i] < rowData[i].length()) maxWidth[i] = rowData[i].length();
+                }
+            }
+
+            // väljundi formattimine
+            StringBuilder format = new StringBuilder();
+
+            for (int x : maxWidth) format.append("%-").append(x + 2).append("s ");
+            format.append("%n");
+
+            for(String[] rowData : data)
+            {
+                System.out.printf(format.toString(), rowData);
             }
         }
     }
