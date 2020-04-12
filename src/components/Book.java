@@ -1,3 +1,5 @@
+package components;
+
 public class Book {
     private String title;
     private String authorName;
@@ -8,7 +10,7 @@ public class Book {
 
     @Override
     public String toString() {
-        // status, title, authorName, publicationDate, genre, ISBN: isbn
+        // status, title, authorName, publicationDate, genre, objects.ISBN: isbn
 
         StringBuilder sb = new StringBuilder();
 
@@ -20,7 +22,7 @@ public class Book {
 
         if (!this.publicationDate.equals("")) sb.append(", ").append(this.publicationDate);
         if (!this.genre.equals("")) sb.append(", ").append(this.genre);
-        if (!this.ISBN.toString().equals("")) sb.append(", ISBN: ").append(this.ISBN);
+        if (!this.ISBN.toString().equals("")) sb.append(", objects.ISBN: ").append(this.ISBN);
 
         return sb.toString();
     }

@@ -1,3 +1,7 @@
+import components.Book;
+import components.Library;
+import components.Status;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -8,8 +12,8 @@ import java.util.Scanner;
 class Startup {
 
     public static ArrayList<Library> Initialize() {
-        //Loeb .csv failid sisse, moodustab nende sisudest Library objektid ja koondab need ArrayListi
-        //Väljastab Library objektide ArrayListi
+        //Loeb .csv failid sisse, moodustab nende sisudest objects.Library objektid ja koondab need ArrayListi
+        //Väljastab objects.Library objektide ArrayListi
 
         ArrayList<Library> allLibs = new ArrayList<>();
 
@@ -26,13 +30,13 @@ class Startup {
                 }
             }
 
-            //Library objektide genereerimine Arraylisti
+            //objects.Library objektide genereerimine Arraylisti
             for (String csvFile : csvFiles) {
                 try {
                     File fail = new File("./libs/"+csvFile);
                     Scanner scanner = new Scanner(fail);
 
-                    Library tempLib = new Library(scanner.nextLine());//Library nimi
+                    Library tempLib = new Library(scanner.nextLine());//objects.Library nimi
                     List<Book> tempBooks = new ArrayList<>();
 
                     while (scanner.hasNextLine()) {
@@ -49,7 +53,7 @@ class Startup {
                     }
                     scanner.close();
 
-                    //Raaamtute lisamine Librarysse, Library lisamine ArrayListi
+                    //Raaamtute lisamine Librarysse, objects.Library lisamine ArrayListi
                     tempLib.addBooks(tempBooks);
                     allLibs.add(tempLib);
 

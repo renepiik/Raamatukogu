@@ -1,3 +1,5 @@
+import components.Library;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +47,7 @@ public class Console {
                     break;
                 }
                 case "ll": { // list libraries
-                    console.listLibraries();
+                    System.out.println(console.getLibraries());
                     break;
                 }
                 case "cl": { // create library

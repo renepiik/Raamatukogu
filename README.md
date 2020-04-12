@@ -17,14 +17,14 @@ _Singleton_ klass, mille kaudu kasutaja programmiga suhtleb. Siin paikneb kogu p
 ### Startup
 Klass, mille meetodit Initialize() jooksutatakse ühe korra uue _ConsoleInterface_ tüüpi objekti loomisel. Tagastab ./libs/ kausta salvestatud raamatukogude info.
 
-### Library
-Raamatukogu klass, hoiustab _Book_ tüüpi objekte. Meetod Library.save() salvestab vastava raamatukogu info samanimelisse .csv faili ./libs/ kaustas.
+### components.Library
+Raamatukogu klass, hoiustab _Book_ tüüpi objekte. Meetod components.Library.save() salvestab vastava raamatukogu info samanimelisse .csv faili ./libs/ kaustas.
 
-### Book
+### components.Book
 Raamatu klass, hoiustab raamatu isendiga seotud informatsiooni.
 
-### ISBN
-Väike klass selleks, et uute raamatute info sisestamisel saaks kontrollida ISBN koodi õigsust.
+### components.ISBN
+Väike klass selleks, et uute raamatute info sisestamisel saaks kontrollida components.ISBN koodi õigsust.
 
 ## Protsess
 Pärast projekti algse versiooni kirjutamist jagasime edasise töö laias laastus kaheks:
@@ -35,7 +35,7 @@ Kui mõlemad tööd said valmis, _merge_-sime harud ja tegime väikseid muudatus
 
 ## Panus
 ### René
-Kirjutas programmi algse versiooni jaoks klassid ISBN, _Library_ ja _Book_. Implementeeris kasutajaga suhtlemise klassi _ConsoleInterface_ abil.
+Kirjutas programmi algse versiooni jaoks klassid components.ISBN, _Library_ ja _Book_. Implementeeris kasutajaga suhtlemise klassi _ConsoleInterface_ abil.
 
 ### Sander
 Kirjutas klassi _Startup_, ühtlustas keeleliselt kasutajaga suhtlemise, implementeeris andmete salvestamise ja lugemise .csv formaadis.

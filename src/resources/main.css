@@ -1,0 +1,20 @@
+.titleText {
+    -fx-font-size: 22px;
+}
+
+.authorText {
+    -fx-font-size: 16px;
+}
+
+.sidebarTitle {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.sidebarLibraryName {
+    -fx-font-size: 14px;
+}
+
+.sidebarLibraryNameOnHover {
+    -fx-font-weight: bold;
+}

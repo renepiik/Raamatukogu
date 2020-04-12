@@ -1,3 +1,5 @@
+package components;
+
 public class ISBN {
     private String isbn;
 
@@ -23,7 +25,7 @@ public class ISBN {
         if (checkISBN10(isbn) || checkISBN13(isbn)) this.isbn = isbn;
     }
 
-    // returns true for valid ISBN-10
+    // returns true for valid objects.ISBN-10
     private boolean checkISBN10(String ISBN_number) {
         int s = 0;
         int t = 0;
@@ -36,7 +38,7 @@ public class ISBN {
         return (s % 11 == 0);
     }
 
-    // returns true for valid ISBN-13
+    // returns true for valid objects.ISBN-13
     private boolean checkISBN13(String ISBN_number) {
         int s = 0;
 

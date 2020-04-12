@@ -1,6 +1,10 @@
+import components.Book;
+import components.Library;
+import components.OperationType;
+import components.Status;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 // singleton class for ConsoleInterface because there only ever needs to be one instance of the class
@@ -66,7 +70,7 @@ public class ConsoleInterface {
             listBooks();
         }
         else {
-            listLibraries();
+            System.out.println(getLibraries());
         }
     }
 
@@ -135,8 +139,8 @@ public class ConsoleInterface {
         }
     }
 
-    public void listLibraries() {
-        System.out.println(this.libraries);
+    public ArrayList<Library> getLibraries() {
+        return this.libraries;
     }
 
     // these methods can only be accessed when this.selectedLibrary has been set
@@ -268,13 +272,13 @@ public class ConsoleInterface {
 
     public void listBooks() {
         if (this.operationType == OperationType.LIBRARY) {
-            // status, title, authorName, publicationDate, genre, ISBN: isbn
+            // status, title, authorName, publicationDate, genre, objects.ISBN: isbn
 
             // loon uue ArrayListi String[] arraydest, et arvutada välja printimiseks sobilike tulpade laiusi
             ArrayList<String[]> data = new ArrayList<>();
 
             // header
-            data.add(new String[]{"Staatus", "Pealkiri", "Autor", "Ilmumisaeg", "Žanr", "ISBN"});
+            data.add(new String[]{"Staatus", "Pealkiri", "Autor", "Ilmumisaeg", "Žanr", "objects.ISBN"});
 
             // iga raamat on üks data rida
             for (Book book : this.selectedLibrary.getBooks()) {
@@ -385,8 +389,8 @@ public class ConsoleInterface {
             String newGenre = this.getCommand("Sisesta žanr: ");
             if (!newGenre.equals("")) this.selectedBook.setGenre(newGenre);
 
-            // ISBN
-            String newISBN = this.getCommand("Sisesta ISBN: ");
+            // objects.ISBN
+            String newISBN = this.getCommand("Sisesta objects.ISBN: ");
             if (!newISBN.equals("")) this.selectedBook.setISBN(newISBN);
 
             // status
