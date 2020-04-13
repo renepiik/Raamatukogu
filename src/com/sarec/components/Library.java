@@ -1,9 +1,10 @@
-package components;
+package com.sarec.components;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import com.sarec.Vars;
 
 public class Library {
     private List<Book> books;
@@ -52,7 +53,7 @@ public class Library {
     }
 
     public void save() throws IOException {
-        File libraryFile = new File("./libs/"+name + ".csv");
+        File libraryFile = new File(Vars.libsPath + name + ".csv");
         PrintWriter writer = new PrintWriter(libraryFile, StandardCharsets.UTF_8);
         writer.println(name);
         for (Book book : this.books) {

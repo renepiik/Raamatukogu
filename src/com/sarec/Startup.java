@@ -1,6 +1,8 @@
-import components.Book;
-import components.Library;
-import components.Status;
+package com.sarec;
+
+import com.sarec.components.Book;
+import com.sarec.components.Library;
+import com.sarec.components.Status;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,17 +25,20 @@ class Startup {
         // failide lugemine try-catchi sees, et programm käivituks ka siis, kui libs kausta olemas pole
         // NullPointerExceptioni puhul luuakse kaust
         try {
-            File dir = new File("./libs/");
+            File dir = new File(Vars.libsPath);
             for (File file : Objects.requireNonNull(dir.listFiles())) {
                 if (file.getName().endsWith((".csv"))) {
                     csvFiles.add(file.getName());
                 }
             }
 
+            System.out.println(csvFiles);
+
             //objects.Library objektide genereerimine Arraylisti
             for (String csvFile : csvFiles) {
                 try {
-                    File fail = new File("./libs/"+csvFile);
+                    String filePath = Vars.libsPath+csvFile;
+                    File fail = new File(filePath);
                     Scanner scanner = new Scanner(fail);
 
                     Library tempLib = new Library(scanner.nextLine());//objects.Library nimi
@@ -45,10 +50,11 @@ class Startup {
 
                         //Raamatu parameetrite määramine
                         Book tempBook = new Book(data[0].substring(1), data[1]);
-                        if (!data[2].equals("null")) tempBook.setPublicationDate(data[2]);
-                        if (!data[3].equals("null")) tempBook.setGenre(data[3]);
-                        if (!data[4].equals("null")) tempBook.setISBN(data[4]);
-                        if (!data[5].equals("null")) tempBook.setStatus(Status.valueOf(data[5]));
+                        System.out.println(tempBook);
+                        if (!data[2].equals("")) tempBook.setPublicationDate(data[2]);
+                        if (!data[3].equals("")) tempBook.setGenre(data[3]);
+                        if (!data[4].equals("")) tempBook.setISBN(data[4]);
+                        if (!data[5].equals("")) tempBook.setStatus(Status.valueOf(data[5]));
                         tempBooks.add(tempBook);//Lisamine raamatute Listi
                     }
                     scanner.close();
@@ -67,7 +73,7 @@ class Startup {
             return allLibs;
         } catch (Exception NullPointerException) {
             // loob libs/ directory kuna seda veel pole, tagastab tühja raamatukogude listi
-            new File("./libs/").mkdirs();
+            new File(Vars.libsPath).mkdirs();
             return allLibs;
         }
     }//Initialize

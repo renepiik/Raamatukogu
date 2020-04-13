@@ -1,4 +1,6 @@
-import components.Library;
+package com.sarec;
+
+import com.sarec.components.Library;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +12,7 @@ public class Console {
         ArrayList<Library> libraries = new ArrayList<>();
         Map<String, String> commands = new HashMap<>();
         ConsoleInterface console = ConsoleInterface.getInstance();
+        System.out.println("Salvstan info kausta '"+Vars.libsPath+"'");
         System.out.println("Sisesta käsklus või 'help' abi jaoks");
 
         // ingliskeelsed juhised programmi kasutamiseks

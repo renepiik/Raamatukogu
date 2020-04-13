@@ -1,4 +1,4 @@
-package components;
+package com.sarec.components;
 
 public class ISBN {
     private String isbn;

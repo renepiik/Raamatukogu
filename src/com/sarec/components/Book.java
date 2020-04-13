@@ -1,4 +1,4 @@
-package components;
+package com.sarec.components;
 
 public class Book {
     private String title;

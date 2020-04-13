@@ -1,13 +1,15 @@
-import components.Book;
-import components.Library;
-import components.OperationType;
-import components.Status;
+package com.sarec;
+
+import com.sarec.components.Book;
+import com.sarec.components.Library;
+import com.sarec.components.OperationType;
+import com.sarec.components.Status;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-// singleton class for ConsoleInterface because there only ever needs to be one instance of the class
+// singleton class for com.sarec.ConsoleInterface because there only ever needs to be one instance of the class
 // used for setting and retrieving console path, setting accessible methods accordingly
 
 public class ConsoleInterface {
@@ -278,7 +280,7 @@ public class ConsoleInterface {
             ArrayList<String[]> data = new ArrayList<>();
 
             // header
-            data.add(new String[]{"Staatus", "Pealkiri", "Autor", "Ilmumisaeg", "Žanr", "objects.ISBN"});
+            data.add(new String[]{"Staatus", "Pealkiri", "Autor", "Ilmumisaeg", "Žanr", "ISBN"});
 
             // iga raamat on üks data rida
             for (Book book : this.selectedLibrary.getBooks()) {

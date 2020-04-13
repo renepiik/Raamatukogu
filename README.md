@@ -8,23 +8,23 @@ Programm võimaldab luua ja hallata isiklikku raamatukogude kataloogi. Programmi
 
 ## Klassid
 
-### Main
-Siin luuakse klassi ConsoleInterface isend, mille kaudu suhtleb kasutaja programmiga. Samuti toimub main() meetodis kasutaja sisendi lugemine ja tõlgendamine.
+### com.sarec.Main
+Siin luuakse klassi com.sarec.ConsoleInterface isend, mille kaudu suhtleb kasutaja programmiga. Samuti toimub main() meetodis kasutaja sisendi lugemine ja tõlgendamine.
 
-### ConsoleInterface
+### com.sarec.ConsoleInterface
 _Singleton_ klass, mille kaudu kasutaja programmiga suhtleb. Siin paikneb kogu programmi loogika, mis seondub info käitlemisega. Klassi isend salvestab kasutaja sisestatud info ja programmi sulgemisel kirjutab selle failidesse.
 
-### Startup
+### com.sarec.Startup
 Klass, mille meetodit Initialize() jooksutatakse ühe korra uue _ConsoleInterface_ tüüpi objekti loomisel. Tagastab ./libs/ kausta salvestatud raamatukogude info.
 
-### components.Library
-Raamatukogu klass, hoiustab _Book_ tüüpi objekte. Meetod components.Library.save() salvestab vastava raamatukogu info samanimelisse .csv faili ./libs/ kaustas.
+### com.sarec.components.Library
+Raamatukogu klass, hoiustab _Book_ tüüpi objekte. Meetod com.sarec.components.Library.save() salvestab vastava raamatukogu info samanimelisse .csv faili ./libs/ kaustas.
 
-### components.Book
+### com.sarec.components.Book
 Raamatu klass, hoiustab raamatu isendiga seotud informatsiooni.
 
-### components.ISBN
-Väike klass selleks, et uute raamatute info sisestamisel saaks kontrollida components.ISBN koodi õigsust.
+### com.sarec.components.ISBN
+Väike klass selleks, et uute raamatute info sisestamisel saaks kontrollida com.sarec.components.ISBN koodi õigsust.
 
 ## Protsess
 Pärast projekti algse versiooni kirjutamist jagasime edasise töö laias laastus kaheks:
@@ -35,7 +35,7 @@ Kui mõlemad tööd said valmis, _merge_-sime harud ja tegime väikseid muudatus
 
 ## Panus
 ### René
-Kirjutas programmi algse versiooni jaoks klassid components.ISBN, _Library_ ja _Book_. Implementeeris kasutajaga suhtlemise klassi _ConsoleInterface_ abil.
+Kirjutas programmi algse versiooni jaoks klassid com.sarec.components.ISBN, _Library_ ja _Book_. Implementeeris kasutajaga suhtlemise klassi _ConsoleInterface_ abil.
 
 ### Sander
 Kirjutas klassi _Startup_, ühtlustas keeleliselt kasutajaga suhtlemise, implementeeris andmete salvestamise ja lugemise .csv formaadis.
