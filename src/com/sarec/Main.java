@@ -20,7 +20,7 @@ public class Main extends Application {
         // get the instance of MainController that was initialized by FXMLLoader
         MainController mainController = mainFxmlLoader.getController();
 
-        Scene mainScene = new Scene(root, 600, 400);
+        Scene mainScene = new Scene(root, 800, 600);
         ConsoleInterface console = ConsoleInterface.getInstance();
 
         // load library selection to primaryStage
