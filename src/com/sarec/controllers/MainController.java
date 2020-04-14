@@ -1,5 +1,6 @@
 package com.sarec.controllers;
 
+import com.sarec.ConsoleInterface;
 import com.sarec.components.Book;
 import com.sarec.components.Library;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainController {
@@ -28,7 +30,7 @@ public class MainController {
     @FXML
     FlowPane booksFlowPane;
 
-    public void displayLibraries(ArrayList<Library> libraries) {
+    public void displayLibraries(ArrayList<Library> libraries, ConsoleInterface console) {
         VBox nimekiri = new VBox();
         nimekiri.setPadding(new Insets(10));
         nimekiri.setBackground(new Background(
@@ -39,7 +41,9 @@ public class MainController {
         nimekiri.getChildren().add(sidebarTitle);
 
 
-        //Uue Raamatukogu loomise nupp
+        //********************************************************
+
+        //Uue Raamatukogu loomine
         Button newLibNupp = new Button("Loo uus raamatukogu");
         nimekiri.getChildren().add(newLibNupp);
 
@@ -48,6 +52,7 @@ public class MainController {
             Group layout = new Group();
             Scene newLibStseen = new Scene(layout, 400, 120);
 
+            //Scene features
             Label tekst = new Label("Sisestage uue Raamatukogu nimi siia:");
             tekst.setLayoutX(5);
             layout.getChildren().add(tekst);
@@ -68,13 +73,26 @@ public class MainController {
             loomiseTekst.setLayoutX(5);
             layout.getChildren().add(loomiseTekst);
 
+            //Loomise event
             looNupp.setOnMouseClicked(mouseEvent -> {
                 //Ei saa luua ilma nimeta (ega vaikimisi sätestatud nimega) raamatukogu
                 if (!(newLibNimi.getText().equals("") || newLibNimi.getText().equals("Nimi"))) {
-
+                    console.createLibraryWithName(newLibNimi.getText());
+                    for (Library library : libraries) {
+                        try {
+                            library.save();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     loomiseTekst.setText("Uus Raamatukogu nimega " + newLibNimi.getText() + " on loodud.");
+
+                    //Et loetelu automaatselt uueneks
+                    displayLibraries(libraries, console);
                 }
             });//event
+
+            //****************************************************
 
 
             Stage newLibAken = new Stage();
