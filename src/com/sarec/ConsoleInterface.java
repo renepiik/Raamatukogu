@@ -76,6 +76,22 @@ public class ConsoleInterface {
         }
     }
 
+    public Library getSelectedLibrary() {
+        return selectedLibrary;
+    }
+
+    public void setSelectedLibrary(Library selectedLibrary) {
+        this.selectedLibrary = selectedLibrary;
+    }
+
+    public Book getSelectedBook() {
+        return selectedBook;
+    }
+
+    public void setSelectedBook(Book selectedBook) {
+        this.selectedBook = selectedBook;
+    }
+
     /*
     LIBRARY METHODS
 
@@ -290,7 +306,6 @@ public class ConsoleInterface {
 
             // rea pikkus ja ridade arv
             int col = data.get(0).length;
-            int row = data.size();
 
             // Array, kuhu lisatakse iga tulba suurim pikkus
             int[] maxWidth = new int[col];

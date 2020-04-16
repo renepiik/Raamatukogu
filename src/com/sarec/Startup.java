@@ -32,8 +32,6 @@ class Startup {
                 }
             }
 
-            System.out.println(csvFiles);
-
             //objects.Library objektide genereerimine Arraylisti
             for (String csvFile : csvFiles) {
                 try {
@@ -50,7 +48,6 @@ class Startup {
 
                         //Raamatu parameetrite määramine
                         Book tempBook = new Book(data[0].substring(1), data[1]);
-                        System.out.println(tempBook);
                         if (!data[2].equals("")) tempBook.setPublicationDate(data[2]);
                         if (!data[3].equals("")) tempBook.setGenre(data[3]);
                         if (!data[4].equals("")) tempBook.setISBN(data[4]);
