@@ -19,7 +19,7 @@
     </fx:define>
 
     <fx:define>
-        <FlowPane fx:id="booksFlowPane"/>
+        <FlowPane fx:id="booksFlowPane" styleClass="booksFlowPane"/>
     </fx:define>
 
     <center>

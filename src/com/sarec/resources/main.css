@@ -1,3 +1,7 @@
+.root {
+    -fx-background-color: #fffffe;
+}
+
 .titleText {
     -fx-font-size: 18px;
 }
@@ -22,4 +26,12 @@
 
 .book {
     -fx-padding: 10px 10px 10px 10px;
+}
+
+.booksFlowPane {
+    -fx-background-color: #fffffe;
+}
+
+.mainBorderPane {
+    -fx-background-color: #fffffe;
 }
