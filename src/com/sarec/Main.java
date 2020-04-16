@@ -5,6 +5,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import com.sarec.components.Library;
 
@@ -17,23 +19,22 @@ public class Main extends Application {
         // fxml loader
         final FXMLLoader mainFxmlLoader = new FXMLLoader(getClass().getResource("resources/main.fxml"));
         Parent root = mainFxmlLoader.load();
+        root.getStyleClass().add("root");
         // get the instance of MainController that was initialized by FXMLLoader
         MainController mainController = mainFxmlLoader.getController();
 
         Scene mainScene = new Scene(root, 600, 400);
         ConsoleInterface console = ConsoleInterface.getInstance();
+        mainController.setConsoleInterface(console);
 
         // load library selection to primaryStage
         ArrayList<Library> libraries = console.getLibraries();
         mainController.displayLibraries(libraries);
 
+        primaryStage.getIcons().add(new Image("com/sarec/resources/icon.png"));
         primaryStage.setTitle("Raamatukogu");
         primaryStage.setScene(mainScene);
         primaryStage.show();
-    }
-
-    public void loadLibrary(Library library) {
-
     }
 
     public static void main(String[] args) {
