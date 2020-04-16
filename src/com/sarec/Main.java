@@ -23,13 +23,13 @@ public class Main extends Application {
         // get the instance of MainController that was initialized by FXMLLoader
         MainController mainController = mainFxmlLoader.getController();
 
-        Scene mainScene = new Scene(root, 600, 400);
+        Scene mainScene = new Scene(root, 800, 600);
         ConsoleInterface console = ConsoleInterface.getInstance();
         mainController.setConsoleInterface(console);
 
         // load library selection to primaryStage
         ArrayList<Library> libraries = console.getLibraries();
-        mainController.displayLibraries(libraries);
+        mainController.displayLibraries(libraries, console);
 
         primaryStage.getIcons().add(new Image("com/sarec/resources/icon.png"));
         primaryStage.setTitle("Raamatukogu");
