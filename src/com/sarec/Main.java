@@ -29,7 +29,17 @@ public class Main extends Application {
 
         // load library selection to primaryStage
         ArrayList<Library> libraries = console.getLibraries();
-        mainController.displayLibraries(libraries, console);
+        mainController.displayLibraries(libraries);
+
+        //Raamatukoguse salvestameine toimub ka siis, kui peaaken ylevalt ristist kinni pannakse
+        primaryStage.setOnCloseRequest(eh -> {
+            try {
+                console.quit();
+                System.exit(1);
+            } catch (IOException e) {
+                System.out.println("Tekkis tõrge, programmi ei suudetud sulgeda.");
+            }
+        });
 
         primaryStage.getIcons().add(new Image("com/sarec/resources/icon.png"));
         primaryStage.setTitle("Raamatukogu");

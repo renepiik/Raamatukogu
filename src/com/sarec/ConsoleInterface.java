@@ -55,16 +55,11 @@ public class ConsoleInterface {
     }
 
     public boolean quit() throws IOException {
-        String input = this.getCommand("Kas te soovite programmist lahkuda? (jah/ei)");
-        if (input.toLowerCase().equals("jah")) {
-            // siin salvestatakse kõik sisestatud info
-            for (Library library : this.libraries) {
-                library.save();
-            }
-
-            return true;
+        // siin salvestatakse kõik sisestatud info
+        for (Library library : this.libraries) {
+            library.save();
         }
-        return false;
+        return true;
     }
 
     public void list() {
