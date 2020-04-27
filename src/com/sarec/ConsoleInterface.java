@@ -54,12 +54,16 @@ public class ConsoleInterface {
         return scanner.nextLine();
     }
 
-    public boolean quit() throws IOException {
+    public boolean save() throws IOException {
         // siin salvestatakse kõik sisestatud info
         for (Library library : this.libraries) {
             library.save();
         }
         return true;
+    }
+
+    public boolean quit() throws IOException {
+        return this.save();
     }
 
     public void list() {
