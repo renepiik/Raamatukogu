@@ -66,21 +66,6 @@ public class MainController {
                         new Insets(0))));
         nimekiri.getChildren().add(sidebarTitle);
 
-        //Quit nupp
-        Button quitButton = new Button("Välju programmist");
-        nimekiri.getChildren().add(quitButton);
-
-        quitButton.setOnMousePressed( mouseEvent -> {
-            try {
-                consoleInterface.quit();
-                System.exit(1);
-            } catch (IOException e) {
-                System.out.println("Tekkis tõrge, programmi ei suudetud sulgeda.");
-            }
-
-        });
-
-
         //Uue Raamatukogu loomine
         Button newLibNupp = new Button("Loo uus raamatukogu");
         nimekiri.getChildren().add(newLibNupp);
