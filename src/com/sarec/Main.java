@@ -29,7 +29,7 @@ public class Main extends Application {
 
         // load library selection to primaryStage
         ArrayList<Library> libraries = console.getLibraries();
-        mainController.displayLibraries(libraries, console);
+        mainController.displayLibraries(libraries);
 
         primaryStage.getIcons().add(new Image("com/sarec/resources/icon.png"));
         primaryStage.setTitle("Raamatukogu");
