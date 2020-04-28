@@ -1,10 +1,8 @@
 package com.sarec.components;
 
-import com.sarec.ConsoleInterface;
 import com.sarec.controllers.MainController;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -49,9 +47,7 @@ public class NewLibraryStage extends Stage {
         this.setScene(newLibStseen);
 
         //Raamatukogu Loomise event
-        looNupp.setOnMouseClicked(me -> {
-            createLibraryButtonHandler(newLibNimi.getText());
-        });
+        looNupp.setOnMouseClicked(me -> createLibraryButtonHandler(newLibNimi.getText()));
     }
 
     private void createLibraryButtonHandler(String newLibNimi) {
