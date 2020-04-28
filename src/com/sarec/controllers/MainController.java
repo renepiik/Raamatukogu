@@ -2,10 +2,7 @@ package com.sarec.controllers;
 
 import com.sarec.ConsoleInterface;
 import com.sarec.Vars;
-import com.sarec.components.Book;
-import com.sarec.components.ISBN;
-import com.sarec.components.Library;
-import com.sarec.components.Status;
+import com.sarec.components.*;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -66,101 +63,14 @@ public class MainController {
                         new Insets(0))));
         nimekiri.getChildren().add(sidebarTitle);
 
-        //Uue Raamatukogu loomine
-        Button newLibNupp = new Button("Loo uus raamatukogu");
-        nimekiri.getChildren().add(newLibNupp);
-
-        newLibNupp.setOnMouseClicked(me -> {
-
-            Group layout = new Group();
-            Scene newLibStseen = new Scene(layout, 400, 120);
-
-            //Scene features
-            Label tekst = new Label("Sisestage uue Raamatukogu nimi siia:");
-            tekst.setLayoutX(5);
-            layout.getChildren().add(tekst);
-
-            TextField newLibNimi = new TextField("Nimi");
-            newLibNimi.setPromptText("Nimi");
-            newLibNimi.setPrefWidth(newLibStseen.getWidth()-10);
-            newLibNimi.setLayoutY(20);
-            newLibNimi.setLayoutX(5);
-            layout.getChildren().add(newLibNimi);
-
-            Button looNupp = new Button("Loo");
-            looNupp.setLayoutY(50);
-            looNupp.setLayoutX(5);
-            layout.getChildren().add(looNupp);
-
-            Text loomiseTekst = new Text("");
-            loomiseTekst.setLayoutY(90);
-            loomiseTekst.setLayoutX(5);
-            layout.getChildren().add(loomiseTekst);
-
-            Stage newLibAken = new Stage();
-            newLibAken.setTitle("Uus Raamatukogu");
-            newLibAken.setScene(newLibStseen);
-            newLibAken.show();
-
-            //RK Loomise event
-            looNupp.setOnMouseClicked(mouseEvent -> {
-                //Ei saa luua ilma nimeta (ega vaikimisi sätestatud nimega) raamatukogu
-                if (!(newLibNimi.getText().equals("") || newLibNimi.getText().equals("Nimi"))) {
-                    this.consoleInterface.createLibraryWithName(newLibNimi.getText());
-
-                    //Notification
-                    Group notifGroup = new Group();
-                    Label notif = new Label("Uus Raamatukogu nimega " + newLibNimi.getText() + " on loodud.");
-                    notif.setLayoutX(5);
-                    Label rida2 = new Label("Vajutage nuppu \"Sulge\" või klaviatuuril Esc, et see aken sulgeda.");
-                    rida2.setLayoutY(15);
-                    rida2.setLayoutX(5);
-                    Button notifButton = new Button("Sulge");
-                    notifButton.setLayoutY(40);
-                    notifButton.setLayoutX(5);
-                    notifGroup.getChildren().addAll(notif, rida2, notifButton);
-
-                    Scene notifScene = new Scene(notifGroup);
-                    Stage notifStage = new Stage();
-                    notifStage.setScene(notifScene);
-                    notifStage.setTitle("Uus raamatukogu on loodud");
-
-                    notifStage.setHeight(100.0);
-                    notifStage.setWidth(350.0 + newLibNimi.getText().length() * 7);
-                    notifStage.show();
-
-                    //Sulgemise eventid (keyEvent ja mouseEvent)
-                    notifScene.setOnKeyPressed(ke -> {
-                        if (ke.getCode() == KeyCode.ESCAPE) notifStage.close();
-                    });
-                    notifButton.setOnMousePressed(mee -> notifStage.close());
-
-
-                    //Et loetelu automaatselt uueneks
-                    displayLibraries(libraries);
-                }
-            });//RK Loomise event
-
-        });//NewLib nupu Event
-
-        Text text = new Text();
-        nimekiri.getChildren().add(text);
-
         //Raamatukogude genereerimine
         for (Library library : libraries) {
             String libraryName = library.getName();
-            Label sidebarLibraryName = new Label(libraryName);
+            SecondaryButton sidebarLibraryName = new SecondaryButton(libraryName);
+            sidebarLibraryName.setStyle(Vars.ButtonStyleSecondary);
             sidebarLibraryName.getStyleClass().add("sidebarLibraryName");
 
-            // text turns bold on hover
-            sidebarLibraryName.setOnMouseEntered(mouseEvent ->
-                    sidebarLibraryName.getStyleClass().add("sidebarLibraryNameOnHover"));
-
-            // text turns back to normal when mouse leaves
-            sidebarLibraryName.setOnMouseExited(mouseEvent ->
-                    sidebarLibraryName.getStyleClass().removeAll("sidebarLibraryNameOnHover"));
-
-            // loads the contents of library when its label is clicked
+            // loads the contents of library when its button is clicked
             sidebarLibraryName.setOnMouseClicked(mouseEvent -> {
                 if (this.consoleInterface.getSelectedLibrary() != library) {
                     clearLibrary();
@@ -168,8 +78,22 @@ public class MainController {
                 }
             });
 
-            nimekiri.getChildren().add(sidebarLibraryName);
+            HBox spacer = new HBox();
+            spacer.setMinHeight(10);
+
+            nimekiri.getChildren().addAll(sidebarLibraryName, spacer);
         }
+
+        //Uue Raamatukogu loomine
+        PrimaryButton newLibNupp = new PrimaryButton("Loo uus raamatukogu");
+        newLibNupp.getStyleClass().add("newLibNupp");
+        nimekiri.getChildren().add(newLibNupp);
+
+        newLibNupp.setOnMouseClicked(me -> {
+            NewLibraryStage newLibAken = new NewLibraryStage(this);
+            newLibAken.setTitle("Uus Raamatukogu");
+            newLibAken.show();
+        });
 
         mainBorderPane.setLeft(nimekiri);
 
@@ -311,5 +235,9 @@ public class MainController {
 
     public void setConsoleInterface(ConsoleInterface consoleInterface) {
         this.consoleInterface = consoleInterface;
+    }
+
+    public ConsoleInterface getConsoleInterface() {
+        return consoleInterface;
     }
 }
