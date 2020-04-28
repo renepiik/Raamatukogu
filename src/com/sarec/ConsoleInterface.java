@@ -323,9 +323,7 @@ public class ConsoleInterface {
             format.append("%n");
 
             for(String[] rowData : data)
-            {
-                System.out.printf(format.toString(), rowData);
-            }
+                System.out.printf(format.toString(), (Object[]) rowData);
         }
     }
 

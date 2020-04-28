@@ -113,7 +113,7 @@ public class MainController {
         //Raamatud
         HBox bookCover = new HBox();
         bookCover.getStyleClass().add("bookCover");
-        bookCover.styleProperty().set("-fx-background-color: "+Vars.ButtonColor);
+        bookCover.styleProperty().set("-fx-background-color: "+Vars.SecondaryColor);
         bookCover.setAlignment(Pos.CENTER);
         bookCover.setMinHeight(130);
         bookCover.setMinWidth(100);
