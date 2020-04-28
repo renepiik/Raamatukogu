@@ -26,4 +26,7 @@ public class Vars {
 
     public static String TertiaryColor = "#e45858";
     public static Paint TertiaryPaint = Color.web(TertiaryColor);
+
+    public static String ButtonStylePrimary = "-fx-background-color: "+ ButtonColor +"; -fx-border-width: 0px; -fx-font-size: 1.1em; -fx-text-fill: "+LightTextColor+";";
+    public static String ButtonStyleSecondary = "-fx-background-color: "+ SecondaryColor +"; -fx-font-size: 1.1em; -fx-text-fill: "+DarkTextColor+";";
 }

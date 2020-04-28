@@ -54,17 +54,16 @@ public class ConsoleInterface {
         return scanner.nextLine();
     }
 
-    public boolean quit() throws IOException {
-        String input = this.getCommand("Kas te soovite programmist lahkuda? (jah/ei)");
-        if (input.toLowerCase().equals("jah")) {
-            // siin salvestatakse kõik sisestatud info
-            for (Library library : this.libraries) {
-                library.save();
-            }
-
-            return true;
+    public boolean save() throws IOException {
+        // siin salvestatakse kõik sisestatud info
+        for (Library library : this.libraries) {
+            library.save();
         }
-        return false;
+        return true;
+    }
+
+    public boolean quit() throws IOException {
+        return this.save();
     }
 
     public void list() {
