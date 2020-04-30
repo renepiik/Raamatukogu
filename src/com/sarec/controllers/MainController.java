@@ -3,27 +3,22 @@ package com.sarec.controllers;
 import com.sarec.ConsoleInterface;
 import com.sarec.Vars;
 import com.sarec.components.*;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainController {
@@ -133,6 +128,86 @@ public class MainController {
         for (Book book : library.getBooks()) {
             VBox vBook = createBookVBox(book);
             booksFlowPane.getChildren().add(vBook);
+
+            //Raamatu parameetrite muutmise event
+            vBook.setOnMouseClicked(me -> {
+
+                Group paramGroup = new Group();
+
+                Label infoPar = new Label("Siin saate raamtute parameetreid muuta. " +
+                                             "Uuenduste läbiviimiseks vajutage nuppu 'Uuenda'.");
+                TextField pealkiriPar = new TextField(book.getTitle());
+                TextField autorPar = new TextField(book.getAuthorName());
+                TextField ilmuminePar = new TextField(book.getPublicationDate());
+                TextField genrePar = new TextField(book.getGenre());
+                TextField isbnPar = new TextField(book.getISBN().toString());
+                Label statusLabel = new Label("Staatus: ");
+                ComboBox statusPar = new ComboBox();
+                Button uuendaNupp = new Button("Uuenda");
+                Label uuendatudLabel = new Label("");
+                Label errorLabel = new Label("");
+
+                paramGroup.getChildren().addAll(infoPar, pealkiriPar, autorPar, ilmuminePar, genrePar, isbnPar,
+                        statusLabel, statusPar, uuendaNupp, uuendatudLabel, errorLabel);
+
+                uuendaNupp.setOnMouseClicked(mouseEvent -> {
+                    book.setTitle(pealkiriPar.getText());
+                    book.setAuthorName(autorPar.getText());
+                    book.setPublicationDate(ilmuminePar.getText());
+                    book.setGenre(genrePar.getText());
+                    book.setStatus((Status) statusPar.getValue());
+                    try {
+                        book.setISBN(isbnPar.getText());
+                    } catch (Exception e) {
+                        if (!isbnPar.getText().equals("")) errorLabel.setText("Tekkis tõrge, ei suudetud ISBN-i muuta");
+                    }
+                    uuendatudLabel.setText("Raamat " + book.getTitle() + " on uuendatud.");
+                });//uuendamise event
+
+
+                pealkiriPar.setPromptText("Pealkiri");
+                autorPar.setPromptText("Autor");
+                ilmuminePar.setPromptText("Ilmumisaasta");
+                genrePar.setPromptText("Žanr");
+                isbnPar.setPromptText("ISBN, võite tühjaks jätta");
+                statusPar.getItems().addAll(Status.values());
+                statusPar.setValue(Status.AVAILABLE);
+
+                //Alignment
+                infoPar.setLayoutX(5);
+                pealkiriPar.setLayoutX(5);
+                autorPar.setLayoutX(5);
+                ilmuminePar.setLayoutX(5);
+                genrePar.setLayoutX(5);
+                isbnPar.setLayoutX(5);
+                statusLabel.setLayoutX(5);
+                statusPar.setLayoutX(50);
+                uuendaNupp.setLayoutX(5);
+                uuendatudLabel.setLayoutX(5);
+                errorLabel.setLayoutX(5);
+
+                pealkiriPar.setLayoutY(20);
+                autorPar.setLayoutY(45);
+                ilmuminePar.setLayoutY(70);
+                genrePar.setLayoutY(95);
+                isbnPar.setLayoutY(120);
+                statusLabel.setLayoutY(148);
+                statusPar.setLayoutY(145);
+                uuendaNupp.setLayoutY(170);
+                uuendatudLabel.setLayoutY(195);
+                errorLabel.setLayoutY(210);
+                // /Alignment
+
+                Scene paramScene = new Scene(paramGroup);
+                Stage paramStage = new Stage();
+
+                paramStage.setScene(paramScene);
+                paramStage.setWidth(550.0);
+                paramStage.setHeight(500.0);
+
+                paramStage.show();
+
+            });//raamatu muutmise event
         }
 
         //Raamatu lisamise event
@@ -156,7 +231,7 @@ public class MainController {
                         && !autorTF.getText().equals("")) {
                     try {
                         Book uusRaamt = new Book(pealkiriTF.getText(), autorTF.getText(), ilmumineTF.getText(),
-                                                genreTF.getText(), new ISBN(), Status.DEFAULT);
+                                                genreTF.getText(), new ISBN(), Status.AVAILABLE);
                         library.addBook(uusRaamt);
                         lisatudLabel.setText("Raamat pealkirjaga "+ pealkiriTF.getText() +
                                             " ja autoriga "+autorTF.getText() +" on loodud");
@@ -167,7 +242,6 @@ public class MainController {
                     } catch (Exception e) {
                         System.out.println("Tekkis tõrge, Raamtu loomisega ei saadud hakkama.");
                     }
-
                 }
             });
 
@@ -176,7 +250,7 @@ public class MainController {
             autorTF.setPromptText("Autor");
             ilmumineTF.setPromptText("Ilmumisaasta");
             genreTF.setPromptText("Žanr");
-            isbnTF.setPromptText("ISBN");
+            isbnTF.setPromptText("ISBN, võite tühjaks jätta");
 
             //Alignment
             infoLabel.setLayoutX(5);
