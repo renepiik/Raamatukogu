@@ -155,7 +155,7 @@ public class MainController {
                     book.setAuthorName(autorPar.getText());
                     book.setPublicationDate(ilmuminePar.getText());
                     book.setGenre(genrePar.getText());
-                    book.setStatus((Status) statusPar.getValue());
+                    book.setStatus(statusPar.getValue());
                     try {
                         book.setISBN(isbnPar.getText());
                     } catch (Exception e) {
