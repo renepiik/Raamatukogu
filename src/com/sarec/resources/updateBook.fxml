@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:id="updateBookAnchorPane"
+            prefWidth="240">
+    <stylesheets>
+        <URL value="@main.css"/>
+    </stylesheets>
+
+    <VBox spacing="8" style="-fx-padding: 8 8 8 8">
+        <Label fx:id="selgitusLabel" text="Siin saate raamtute parameetreid muuta. Uuenduste läbiviimiseks vajutage nuppu 'Uuenda'."
+               layoutX="5"
+               wrapText="true"
+               prefWidth="200">
+            <VBox.margin>
+                <Insets>
+                    <bottom>16</bottom>
+                </Insets>
+            </VBox.margin>
+        </Label>
+
+        <TextField fx:id="pealkiriPar"
+                   layoutX="5"/>
+
+        <TextField fx:id="autorPar"
+                   layoutX="5"/>
+
+        <TextField fx:id="ilmuminePar"
+                   layoutX="5"/>
+
+        <TextField fx:id="genrePar"
+                   layoutX="5"/>
+
+        <TextField fx:id="isbnPar"
+                   layoutX="5"/>
+
+        <Label  fx:id="staatusLabel"
+                text="Staatus: "
+                layoutX="5"/>
+
+        <ComboBox fx:id="statusPar"
+                  layoutX="5"/>
+
+        <Button text="Uuenda"
+                fx:id="uuendaNupp"
+                layoutX="5"/>
+
+        <Label fx:id="uuendatudLabel"
+               layoutX="5"/>
+
+        <Label fx:id="errorLabel"
+               layoutX="5"/>
+    </VBox>
+
+</AnchorPane>

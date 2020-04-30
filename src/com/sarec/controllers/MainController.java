@@ -3,24 +3,21 @@ package com.sarec.controllers;
 import com.sarec.ConsoleInterface;
 import com.sarec.Vars;
 import com.sarec.components.*;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,7 +33,44 @@ public class MainController {
     @FXML
     FlowPane booksFlowPane;
 
-    private ConsoleInterface consoleInterface;
+    private final ConsoleInterface consoleInterface;
+
+    private static MainController instance = null;
+
+    public static void getInstance(ConsoleInterface consoleInterface, Stage primaryStage) {
+        if (instance == null) instance = new MainController(consoleInterface, primaryStage);
+    }
+
+    public MainController(ConsoleInterface consoleInterface, Stage primaryStage) {
+        final FXMLLoader mainFxmlLoader = new FXMLLoader(getClass().getResource("../resources/main.fxml"));
+        mainFxmlLoader.setController(this);
+        this.consoleInterface = consoleInterface;
+
+        try {
+            mainFxmlLoader.load();
+
+            // load library selection to primaryStage
+            displayLibraries(this.consoleInterface.getLibraries());
+
+            //Raamatukoguse salvestamine toimub ka siis, kui peaaken ülevalt ristist kinni pannakse
+            primaryStage.setOnCloseRequest(eh -> {
+                try {
+                    this.consoleInterface.quit();
+                    System.exit(1);
+                } catch (IOException e) {
+                    System.out.println("Tekkis tõrge, programmi ei suudetud sulgeda.");
+                }
+            });
+
+            //primaryStage.getIcons().add(new Image("../resources/icon.png"));
+            primaryStage.setScene(new Scene(mainFxmlLoader.getRoot()));
+            primaryStage.setTitle("Raamatukogu");
+            primaryStage.show();
+        } catch (IOException e) {
+            System.out.println("Programmi ei suudetud avada.");
+            throw new RuntimeException(e);
+        }
+    }
 
     public void displayLibraries(ArrayList<Library> libraries) {
 
@@ -73,7 +107,8 @@ public class MainController {
             // loads the contents of library when its button is clicked
             sidebarLibraryName.setOnMouseClicked(mouseEvent -> {
                 if (this.consoleInterface.getSelectedLibrary() != library) {
-                    clearLibrary();
+                    this.consoleInterface.setSelectedLibrary(library);
+                    clearLibraryPane();
                     loadLibrary(library);
                 }
             });
@@ -99,7 +134,7 @@ public class MainController {
 
     }//displayLibraries
 
-    public void clearLibrary() {
+    public void clearLibraryPane() {
         booksFlowPane.getChildren().clear();
     }
 
@@ -133,6 +168,9 @@ public class MainController {
         for (Book book : library.getBooks()) {
             VBox vBook = createBookVBox(book);
             booksFlowPane.getChildren().add(vBook);
+
+            //Raamatu parameetrite muutmise event
+            vBook.setOnMouseClicked(me -> new UpdateBookController(book, this.consoleInterface, this));
         }
 
         //Raamatu lisamise event
@@ -156,7 +194,7 @@ public class MainController {
                         && !autorTF.getText().equals("")) {
                     try {
                         Book uusRaamt = new Book(pealkiriTF.getText(), autorTF.getText(), ilmumineTF.getText(),
-                                                genreTF.getText(), new ISBN(), Status.DEFAULT);
+                                                genreTF.getText(), new ISBN(), Status.AVAILABLE);
                         library.addBook(uusRaamt);
                         lisatudLabel.setText("Raamat pealkirjaga "+ pealkiriTF.getText() +
                                             " ja autoriga "+autorTF.getText() +" on loodud");
@@ -167,7 +205,6 @@ public class MainController {
                     } catch (Exception e) {
                         System.out.println("Tekkis tõrge, Raamtu loomisega ei saadud hakkama.");
                     }
-
                 }
             });
 
@@ -176,7 +213,7 @@ public class MainController {
             autorTF.setPromptText("Autor");
             ilmumineTF.setPromptText("Ilmumisaasta");
             genreTF.setPromptText("Žanr");
-            isbnTF.setPromptText("ISBN");
+            isbnTF.setPromptText("ISBN, võite tühjaks jätta");
 
             //Alignment
             infoLabel.setLayoutX(5);
@@ -233,11 +270,12 @@ public class MainController {
         return vBook;
     }
 
-    public void setConsoleInterface(ConsoleInterface consoleInterface) {
-        this.consoleInterface = consoleInterface;
-    }
-
     public ConsoleInterface getConsoleInterface() {
         return consoleInterface;
+    }
+
+    public void refreshLibrary() {
+        clearLibraryPane();
+        loadLibrary(this.consoleInterface.getSelectedLibrary());
     }
 }

@@ -82,7 +82,9 @@ public class Book {
         return ISBN;
     }
 
-    public void setISBN(String ISBN) throws Exception { this.ISBN = new ISBN(ISBN); }
+    public void setISBN(String ISBN) throws Exception {
+        this.ISBN = ISBN.equals("") ? new ISBN() : new ISBN(ISBN);
+    }
 
     public Status getStatus() {
         return status;
