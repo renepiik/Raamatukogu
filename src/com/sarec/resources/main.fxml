@@ -6,10 +6,9 @@
 <?import java.net.URL?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.sarec.controllers.MainController"
             fx:id="mainBorderPane"
             styleClass="mainBorderPane"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="600.0" prefWidth="800.0">
     <stylesheets>
         <URL value="@main.css"/>
     </stylesheets>

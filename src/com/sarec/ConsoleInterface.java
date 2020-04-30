@@ -5,6 +5,8 @@ import com.sarec.components.Library;
 import com.sarec.components.OperationType;
 import com.sarec.components.Status;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -41,7 +43,9 @@ public class ConsoleInterface {
         this.operationType = newType;
 
         // if operationtype is set to a library
-        if (newType == OperationType.LIBRARY) {
+        if (newType == OperationType.DEFAULT) {
+            this.currentPath = newPath;
+        } else if (newType == OperationType.LIBRARY) {
             this.currentPath = newPath;
         } else if (newType == OperationType.BOOK && selectedLibrary != null) {
             this.currentPath = this.selectedLibrary.getName()+"/"+newPath;
@@ -167,11 +171,14 @@ public class ConsoleInterface {
             String deleteCommand = this.getCommand("Kas te soovite eemaldada raamatukogu '"+this.selectedLibrary.getName()+"'? (jah/ei)");
 
             if (deleteCommand.toLowerCase().equals("jah")) {
+                // kustuta info
                 this.libraries.removeIf(library -> library.getName().equals(this.selectedLibrary.getName()));
+                // kustuta fail
+                if (Desktop.getDesktop().isSupported(Desktop.Action.MOVE_TO_TRASH)) Desktop.getDesktop().moveToTrash(new File(Vars.libsPath+this.selectedLibrary.getName()+".csv"));
+                // muuda programmi töörežiim
+                updatePath("", OperationType.DEFAULT);
+                this.selectedLibrary = null;
             }
-
-            updatePath("", OperationType.DEFAULT);
-            this.selectedLibrary = null;
         }
     }
 

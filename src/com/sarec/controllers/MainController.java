@@ -5,6 +5,7 @@ import com.sarec.Vars;
 import com.sarec.components.*;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
@@ -19,6 +20,7 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainController {
@@ -31,7 +33,44 @@ public class MainController {
     @FXML
     FlowPane booksFlowPane;
 
-    private ConsoleInterface consoleInterface;
+    private final ConsoleInterface consoleInterface;
+
+    private static MainController instance = null;
+
+    public static void getInstance(ConsoleInterface consoleInterface, Stage primaryStage) {
+        if (instance == null) instance = new MainController(consoleInterface, primaryStage);
+    }
+
+    public MainController(ConsoleInterface consoleInterface, Stage primaryStage) {
+        final FXMLLoader mainFxmlLoader = new FXMLLoader(getClass().getResource("../resources/main.fxml"));
+        mainFxmlLoader.setController(this);
+        this.consoleInterface = consoleInterface;
+
+        try {
+            mainFxmlLoader.load();
+
+            // load library selection to primaryStage
+            displayLibraries(this.consoleInterface.getLibraries());
+
+            //Raamatukoguse salvestamine toimub ka siis, kui peaaken ülevalt ristist kinni pannakse
+            primaryStage.setOnCloseRequest(eh -> {
+                try {
+                    this.consoleInterface.quit();
+                    System.exit(1);
+                } catch (IOException e) {
+                    System.out.println("Tekkis tõrge, programmi ei suudetud sulgeda.");
+                }
+            });
+
+            //primaryStage.getIcons().add(new Image("../resources/icon.png"));
+            primaryStage.setScene(new Scene(mainFxmlLoader.getRoot()));
+            primaryStage.setTitle("Raamatukogu");
+            primaryStage.show();
+        } catch (IOException e) {
+            System.out.println("Programmi ei suudetud avada.");
+            throw new RuntimeException(e);
+        }
+    }
 
     public void displayLibraries(ArrayList<Library> libraries) {
 
@@ -68,7 +107,8 @@ public class MainController {
             // loads the contents of library when its button is clicked
             sidebarLibraryName.setOnMouseClicked(mouseEvent -> {
                 if (this.consoleInterface.getSelectedLibrary() != library) {
-                    clearLibrary();
+                    this.consoleInterface.setSelectedLibrary(library);
+                    clearLibraryPane();
                     loadLibrary(library);
                 }
             });
@@ -94,7 +134,7 @@ public class MainController {
 
     }//displayLibraries
 
-    public void clearLibrary() {
+    public void clearLibraryPane() {
         booksFlowPane.getChildren().clear();
     }
 
@@ -130,84 +170,7 @@ public class MainController {
             booksFlowPane.getChildren().add(vBook);
 
             //Raamatu parameetrite muutmise event
-            vBook.setOnMouseClicked(me -> {
-
-                Group paramGroup = new Group();
-
-                Label infoPar = new Label("Siin saate raamtute parameetreid muuta. " +
-                                             "Uuenduste läbiviimiseks vajutage nuppu 'Uuenda'.");
-                TextField pealkiriPar = new TextField(book.getTitle());
-                TextField autorPar = new TextField(book.getAuthorName());
-                TextField ilmuminePar = new TextField(book.getPublicationDate());
-                TextField genrePar = new TextField(book.getGenre());
-                TextField isbnPar = new TextField(book.getISBN().toString());
-                Label statusLabel = new Label("Staatus: ");
-                ComboBox<Status> statusPar = new ComboBox<>();
-                Button uuendaNupp = new Button("Uuenda");
-                Label uuendatudLabel = new Label("");
-                Label errorLabel = new Label("");
-
-                paramGroup.getChildren().addAll(infoPar, pealkiriPar, autorPar, ilmuminePar, genrePar, isbnPar,
-                        statusLabel, statusPar, uuendaNupp, uuendatudLabel, errorLabel);
-
-                uuendaNupp.setOnMouseClicked(mouseEvent -> {
-                    book.setTitle(pealkiriPar.getText());
-                    book.setAuthorName(autorPar.getText());
-                    book.setPublicationDate(ilmuminePar.getText());
-                    book.setGenre(genrePar.getText());
-                    book.setStatus(statusPar.getValue());
-                    try {
-                        book.setISBN(isbnPar.getText());
-                    } catch (Exception e) {
-                        if (!isbnPar.getText().equals("")) errorLabel.setText("Tekkis tõrge, ei suudetud ISBN-i muuta");
-                    }
-                    uuendatudLabel.setText("Raamat " + book.getTitle() + " on uuendatud.");
-                });//uuendamise event
-
-
-                pealkiriPar.setPromptText("Pealkiri");
-                autorPar.setPromptText("Autor");
-                ilmuminePar.setPromptText("Ilmumisaasta");
-                genrePar.setPromptText("Žanr");
-                isbnPar.setPromptText("ISBN, võite tühjaks jätta");
-                statusPar.getItems().addAll(Status.values());
-                statusPar.setValue(Status.AVAILABLE);
-
-                //Alignment
-                infoPar.setLayoutX(5);
-                pealkiriPar.setLayoutX(5);
-                autorPar.setLayoutX(5);
-                ilmuminePar.setLayoutX(5);
-                genrePar.setLayoutX(5);
-                isbnPar.setLayoutX(5);
-                statusLabel.setLayoutX(5);
-                statusPar.setLayoutX(50);
-                uuendaNupp.setLayoutX(5);
-                uuendatudLabel.setLayoutX(5);
-                errorLabel.setLayoutX(5);
-
-                pealkiriPar.setLayoutY(20);
-                autorPar.setLayoutY(45);
-                ilmuminePar.setLayoutY(70);
-                genrePar.setLayoutY(95);
-                isbnPar.setLayoutY(120);
-                statusLabel.setLayoutY(148);
-                statusPar.setLayoutY(145);
-                uuendaNupp.setLayoutY(170);
-                uuendatudLabel.setLayoutY(195);
-                errorLabel.setLayoutY(210);
-                // /Alignment
-
-                Scene paramScene = new Scene(paramGroup);
-                Stage paramStage = new Stage();
-
-                paramStage.setScene(paramScene);
-                paramStage.setWidth(550.0);
-                paramStage.setHeight(500.0);
-
-                paramStage.show();
-
-            });//raamatu muutmise event
+            vBook.setOnMouseClicked(me -> new UpdateBookController(book, this.consoleInterface, this));
         }
 
         //Raamatu lisamise event
@@ -307,11 +270,12 @@ public class MainController {
         return vBook;
     }
 
-    public void setConsoleInterface(ConsoleInterface consoleInterface) {
-        this.consoleInterface = consoleInterface;
-    }
-
     public ConsoleInterface getConsoleInterface() {
         return consoleInterface;
+    }
+
+    public void refreshLibrary() {
+        clearLibraryPane();
+        loadLibrary(this.consoleInterface.getSelectedLibrary());
     }
 }
