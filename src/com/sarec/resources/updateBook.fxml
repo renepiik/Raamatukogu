@@ -51,6 +51,9 @@
                 fx:id="uuendaNupp"
                 layoutX="5"/>
 
+        <Button text="Kustuta"
+                fx:id="kustutaNupp"/>
+
         <Label fx:id="uuendatudLabel"
                layoutX="5"/>
 

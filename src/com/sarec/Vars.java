@@ -12,6 +12,8 @@ public class Vars {
     public static String ButtonColor = "#6246ea";
     public static Paint ButtonPaint = Color.web(ButtonColor);
 
+    public static String DangerColor = "#d81111";
+
     public static String BackgroundColor = "#fffffe";
     public static Paint BackgroundPaint = Color.web(BackgroundColor);
 
@@ -28,5 +30,6 @@ public class Vars {
     public static Paint TertiaryPaint = Color.web(TertiaryColor);
 
     public static String ButtonStylePrimary = "-fx-background-color: "+ ButtonColor +"; -fx-border-width: 0px; -fx-font-size: 1.1em; -fx-text-fill: "+LightTextColor+";";
+    public static String ButtonStyleDanger = "-fx-background-color: "+ DangerColor +"; -fx-border-width: 0px; -fx-font-size: 1.1em; -fx-text-fill: "+LightTextColor+";";
     public static String ButtonStyleSecondary = "-fx-background-color: "+ SecondaryColor +"; -fx-font-size: 1.1em; -fx-text-fill: "+DarkTextColor+";";
 }

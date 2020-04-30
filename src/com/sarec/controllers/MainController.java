@@ -170,7 +170,7 @@ public class MainController {
             booksFlowPane.getChildren().add(vBook);
 
             //Raamatu parameetrite muutmise event
-            vBook.setOnMouseClicked(me -> new UpdateBookController(book, this.consoleInterface, this));
+            vBook.setOnMouseClicked(me -> new UpdateBookController(book, library, this.consoleInterface, this));
         }
 
         //Raamatu lisamise event
@@ -179,15 +179,22 @@ public class MainController {
 
             //Features
             Label infoLabel = new Label("Sisestage raamatu parameetrid. Pealkiri ja autor peavad olema sisestatud");
+            infoLabel.setWrapText(true);
+            infoLabel.setPrefWidth(220);
             TextField pealkiriTF = new TextField("Pealkiri");
             TextField autorTF = new TextField("");
             TextField ilmumineTF = new TextField("");
             TextField genreTF = new TextField("");
             TextField isbnTF = new TextField("");
-            Button lisaNupp = new Button("Lisa raamat");
+            PrimaryButton lisaNupp = new PrimaryButton("Lisa raamat");
             Label lisatudLabel = new Label("");
 
-            abGroup.getChildren().addAll(infoLabel,pealkiriTF,autorTF,ilmumineTF,genreTF,isbnTF,lisaNupp,lisatudLabel);
+            VBox container = new VBox();
+            container.getChildren().addAll(infoLabel, pealkiriTF, autorTF, ilmumineTF, genreTF, isbnTF, lisaNupp, lisatudLabel);
+            container.setSpacing(8);
+            container.setStyle("-fx-padding: 16");
+
+            abGroup.getChildren().add(container);
 
             lisaNupp.setOnMouseClicked(mee -> {
                 if (!(pealkiriTF.getText().equals("") || pealkiriTF.getText().equals("Pealkiri"))
@@ -215,32 +222,11 @@ public class MainController {
             genreTF.setPromptText("Žanr");
             isbnTF.setPromptText("ISBN, võite tühjaks jätta");
 
-            //Alignment
-            infoLabel.setLayoutX(5);
-            pealkiriTF.setLayoutX(5);
-            autorTF.setLayoutX(5);
-            ilmumineTF.setLayoutX(5);
-            genreTF.setLayoutX(5);
-            isbnTF.setLayoutX(5);
-            lisaNupp.setLayoutX(5);
-            lisatudLabel.setLayoutX(5);
-
-            pealkiriTF.setLayoutY(20);
-            autorTF.setLayoutY(45);
-            ilmumineTF.setLayoutY(70);
-            genreTF.setLayoutY(95);
-            isbnTF.setLayoutY(120);
-            lisaNupp.setLayoutY(145);
-            lisatudLabel.setLayoutY(170);
-            // /Alignment
-
             Scene abScene = new Scene(abGroup);
             Stage abStage = new Stage();
 
             abStage.setScene(abScene);
-            abStage.setTitle("Uue raamatu loomine");
-            abStage.setHeight(500);
-            abStage.setWidth(500);
+            abStage.setTitle("Uus raamat");
 
             abStage.show();
         });//Raamatu lisamise event

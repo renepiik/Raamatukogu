@@ -1,21 +1,25 @@
 package com.sarec.controllers;
 
-import com.sarec.Console;
 import com.sarec.ConsoleInterface;
 import com.sarec.Vars;
 import com.sarec.components.Book;
+import com.sarec.components.Library;
 import com.sarec.components.PrimaryButton;
 import com.sarec.components.Status;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -29,18 +33,18 @@ public class UpdateBookController {
     @FXML TextField isbnPar;
     @FXML ComboBox<Status> statusPar;
     @FXML Button uuendaNupp;
-    @FXML Label uuendatudLabel;
+    @FXML Button kustutaNupp;
     @FXML Label errorLabel;
-    @FXML Label staatusLabel;
-    @FXML Label selgitusLabel;
 
     private final ConsoleInterface consoleInterface;
     private final MainController mainController;
     private final Book book;
+    private final Library library;
     private final FXMLLoader updateBookLoader;
 
-    public UpdateBookController(Book book, ConsoleInterface consoleInterface, MainController mainController) {
+    public UpdateBookController(Book book, Library library, ConsoleInterface consoleInterface, MainController mainController) {
         this.book = book;
+        this.library = library;
         this.consoleInterface = consoleInterface;
         this.mainController = mainController;
 
@@ -55,12 +59,9 @@ public class UpdateBookController {
         } catch (IOException e) {
             // kui vastavat fxml faili ei leia
             // TODO: error akna avamine
+
             e.printStackTrace();
         }
-    }
-
-    public ConsoleInterface getConsoleInterface() {
-        return consoleInterface;
     }
 
     public void displayWindow() {
@@ -69,6 +70,7 @@ public class UpdateBookController {
         paramStage.setScene(paramScene);
 
         uuendaNupp.setStyle(Vars.ButtonStylePrimary);
+        kustutaNupp.setStyle(Vars.ButtonStyleDanger);
         statusPar.setStyle(Vars.ButtonStyleSecondary);
 
         pealkiriPar.setText(book.getTitle());
@@ -93,6 +95,45 @@ public class UpdateBookController {
             } catch (Exception e) {
                 errorLabel.setText("Tekkis tõrge, ei suudetud ISBN-i muuta");
             }
+        });
+
+        // raamatu kustutamise event
+        kustutaNupp.setOnMouseClicked(mouseEvent -> {
+            // TODO: kinnitamise akna jaoks teha uus klass
+
+            VBox root = new VBox();
+            root.setSpacing(16);
+            root.setPadding(new Insets(8));
+            Scene confirmScene = new Scene(root);
+            Stage confirmWindow = new Stage();
+
+            Button confirmButton = new Button("Jah");
+            confirmButton.setOnMouseClicked(mouseEvent1 -> {
+                library.removeBook(book);
+                confirmWindow.close();
+                paramStage.close();
+                mainController.refreshLibrary();
+            });
+
+            PrimaryButton closeButton = new PrimaryButton("Ei");
+            confirmButton.setStyle(Vars.ButtonStyleDanger);
+            closeButton.setOnMouseClicked(mouseEvent1 -> {
+                confirmWindow.close();
+            });
+
+            HBox row = new HBox();
+            row.setPadding(new Insets(8));
+            row.setSpacing(16);
+            Region spacer = new Region();
+            row.setHgrow(spacer, Priority.ALWAYS);
+            row.getChildren().addAll(confirmButton, spacer, closeButton);
+
+            root.getChildren().add(new Label("Kas oled kindel, et soovid raamatu kustutada?"));
+            root.getChildren().add(row);
+
+            confirmWindow.setScene(confirmScene);
+            confirmWindow.show();
+
         });
 
         pealkiriPar.setPromptText("Pealkiri");
