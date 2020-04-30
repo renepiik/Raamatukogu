@@ -142,7 +142,7 @@ public class MainController {
                 TextField genrePar = new TextField(book.getGenre());
                 TextField isbnPar = new TextField(book.getISBN().toString());
                 Label statusLabel = new Label("Staatus: ");
-                ComboBox statusPar = new ComboBox();
+                ComboBox<Status> statusPar = new ComboBox<>();
                 Button uuendaNupp = new Button("Uuenda");
                 Label uuendatudLabel = new Label("");
                 Label errorLabel = new Label("");
