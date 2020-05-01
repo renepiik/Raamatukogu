@@ -21,10 +21,18 @@
         <FlowPane fx:id="booksFlowPane" styleClass="booksFlowPane"/>
     </fx:define>
 
+    <fx:define>
+        <HBox fx:id="topBar" alignment="CENTER" style="-fx-padding: 8; -fx-background-color: #fffffe">
+            <Label fx:id="selectedLibraryLabel" style="-fx-font-size: 24px"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="updateLibraryButton">Muuda</Button>
+            <HBox minWidth="8"/>
+            <Button fx:id="deleteLibraryButton">Kustuta</Button>
+        </HBox>
+    </fx:define>
+
     <center>
     </center>
 
-    <left>
-
-    </left>
+    <left/>
 </BorderPane>

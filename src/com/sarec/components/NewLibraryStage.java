@@ -48,6 +48,12 @@ public class NewLibraryStage extends Stage {
 
         //Raamatukogu Loomise event
         looNupp.setOnMouseClicked(me -> createLibraryButtonHandler(newLibNimi.getText()));
+
+        newLibStseen.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                createLibraryButtonHandler(newLibNimi.getText());
+            }
+        });
     }
 
     private void createLibraryButtonHandler(String newLibNimi) {
@@ -78,7 +84,7 @@ public class NewLibraryStage extends Stage {
 
             //Sulgemise eventid (keyEvent ja mouseEvent)
             notifScene.setOnKeyPressed(ke -> {
-                if (ke.getCode() == KeyCode.ESCAPE) {
+                if (ke.getCode() == KeyCode.ESCAPE || ke.getCode() == KeyCode.ENTER) {
                     notifStage.close();
                     this.close();
                 }
@@ -89,6 +95,7 @@ public class NewLibraryStage extends Stage {
             });
 
             //Et loetelu automaatselt uueneks
+            this.mainController.clearLibraryPane();
             this.mainController.displayLibraries(this.mainController.getConsoleInterface().getLibraries());
         }
     }

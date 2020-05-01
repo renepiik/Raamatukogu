@@ -9,8 +9,6 @@ import com.sarec.components.Status;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -36,16 +34,14 @@ public class UpdateBookController {
     @FXML Button kustutaNupp;
     @FXML Label errorLabel;
 
-    private final ConsoleInterface consoleInterface;
     private final MainController mainController;
     private final Book book;
     private final Library library;
     private final FXMLLoader updateBookLoader;
 
-    public UpdateBookController(Book book, Library library, ConsoleInterface consoleInterface, MainController mainController) {
+    public UpdateBookController(Book book, Library library, MainController mainController) {
         this.book = book;
         this.library = library;
-        this.consoleInterface = consoleInterface;
         this.mainController = mainController;
 
         this.updateBookLoader = new FXMLLoader(getClass().getResource("../resources/updateBook.fxml"));
@@ -117,15 +113,13 @@ public class UpdateBookController {
 
             PrimaryButton closeButton = new PrimaryButton("Ei");
             confirmButton.setStyle(Vars.ButtonStyleDanger);
-            closeButton.setOnMouseClicked(mouseEvent1 -> {
-                confirmWindow.close();
-            });
+            closeButton.setOnMouseClicked(mouseEvent1 -> confirmWindow.close());
 
             HBox row = new HBox();
             row.setPadding(new Insets(8));
             row.setSpacing(16);
             Region spacer = new Region();
-            row.setHgrow(spacer, Priority.ALWAYS);
+            HBox.setHgrow(spacer, Priority.ALWAYS);
             row.getChildren().addAll(confirmButton, spacer, closeButton);
 
             root.getChildren().add(new Label("Kas oled kindel, et soovid raamatu kustutada?"));

@@ -16,22 +16,23 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import javax.swing.text.LabelView;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainController {
-    @FXML
-    BorderPane mainBorderPane;
-
-    @FXML
-    Label sidebarTitle;
-
-    @FXML
-    FlowPane booksFlowPane;
+    @FXML BorderPane mainBorderPane;
+    @FXML Label sidebarTitle;
+    @FXML FlowPane booksFlowPane;
+    @FXML HBox topBar;
+    @FXML Button deleteLibraryButton;
+    @FXML Button updateLibraryButton;
+    @FXML Label selectedLibraryLabel;
 
     private final ConsoleInterface consoleInterface;
 
@@ -73,10 +74,17 @@ public class MainController {
     }
 
     public void displayLibraries(ArrayList<Library> libraries) {
-
         // loob ScrollPane-i raamatute FlowPane ümber, et pikema nimekirja korral kerida saaks
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(booksFlowPane);
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(topBar);
+        deleteLibraryButton.setStyle(Vars.ButtonStyleDanger);
+        updateLibraryButton.setStyle(Vars.ButtonStyleSecondary);
+        topBar.setVisible(false);
+        borderPane.setCenter(booksFlowPane);
+
+        scrollPane.setContent(borderPane);
         scrollPane.styleProperty().set("-fx-background-color: "+Vars.BackgroundColor);
 
         // horisontaalselt kerida ei saa
@@ -136,10 +144,91 @@ public class MainController {
 
     public void clearLibraryPane() {
         booksFlowPane.getChildren().clear();
+        topBar.setVisible(false);
     }
 
     // loads the books into booksFlowPane
     private void loadLibrary(Library library) {
+        // muuda raamatukogu nimi ülemisel ribal ja muuda riba nähtavaks
+        selectedLibraryLabel.setText(library.getName());
+        topBar.setVisible(true);
+        deleteLibraryButton.setOnMouseClicked(mouseEvent -> {
+            // TODO: kinnitamise akna jaoks teha uus klass
+
+            VBox root = new VBox();
+            root.setSpacing(16);
+            root.setPadding(new Insets(8));
+            Scene confirmScene = new Scene(root);
+            Stage confirmWindow = new Stage();
+
+            Button confirmButton = new Button("Jah");
+            // kui kasutaja kinnitab kustutamise
+            confirmButton.setOnMouseClicked(mouseEvent1 -> {
+                // kustutab faili ja info libraries ArrayListist
+                consoleInterface.deleteLibraryWithoutConfirmation();
+                // displayb uuesti
+                clearLibraryPane();
+                displayLibraries(consoleInterface.getLibraries());
+                confirmWindow.close();
+            });
+
+            PrimaryButton closeButton = new PrimaryButton("Ei");
+            confirmButton.setStyle(Vars.ButtonStyleDanger);
+            closeButton.setOnMouseClicked(mouseEvent1 -> confirmWindow.close());
+
+            HBox row = new HBox();
+            row.setPadding(new Insets(8));
+            row.setSpacing(16);
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+            row.getChildren().addAll(confirmButton, spacer, closeButton);
+
+            root.getChildren().add(new Label("Kas oled kindel, et soovid raamatukogu kustutada?"));
+            root.getChildren().add(row);
+
+            confirmWindow.setScene(confirmScene);
+            confirmWindow.show();
+        }); // raamatukogu kustutamine
+
+        // raamatukogu info uuendamine
+        updateLibraryButton.setOnMouseClicked(mouseEvent -> {
+            Stage updateLibraryStage = new Stage();
+            VBox root = new VBox();
+            root.setSpacing(8);
+            root.setPadding(new Insets(8));
+            Scene updateLibraryScene = new Scene(root);
+
+            Label kirjeldus = new Label("Sisesta uus pealkiri");
+
+            TextField pealkiriField = new TextField();
+            pealkiriField.setText(library.getName());
+
+            PrimaryButton updateButton = new PrimaryButton("Uuenda");
+            updateButton.setOnMouseClicked(mouseEvent1 -> {
+                library.setName(pealkiriField.getText());
+                updateLibraryStage.close();
+                clearLibraryPane();
+                displayLibraries(consoleInterface.getLibraries());
+                loadLibrary(library);
+            });
+            updateLibraryScene.setOnKeyPressed(keyEvent -> {
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    library.setName(pealkiriField.getText());
+                    updateLibraryStage.close();
+                    clearLibraryPane();
+                    displayLibraries(consoleInterface.getLibraries());
+                    loadLibrary(library);
+                }
+            });
+
+
+            root.getChildren().addAll(kirjeldus, pealkiriField, updateButton);
+
+            updateLibraryStage.setScene(updateLibraryScene);
+            updateLibraryStage.setTitle("Uuenda raamatukogu");
+            updateLibraryStage.show();
+        });
+
         // uue raamatu lisamise nupp
         VBox addBookArea = new VBox();
         addBookArea.getStyleClass().add("book");
@@ -170,7 +259,7 @@ public class MainController {
             booksFlowPane.getChildren().add(vBook);
 
             //Raamatu parameetrite muutmise event
-            vBook.setOnMouseClicked(me -> new UpdateBookController(book, library, this.consoleInterface, this));
+            vBook.setOnMouseClicked(me -> new UpdateBookController(book, library, this));
         }
 
         //Raamatu lisamise event
@@ -248,7 +337,7 @@ public class MainController {
 
         Label title = new Label(book.getTitle());
         title.getStyleClass().add("titleText");
-        Label author = new Label(book.getAuthorName());
+        Label author = new Label(shortenName(book.getAuthorName()));
         author.getStyleClass().add("authorText");
 
         vBook.getChildren().addAll(bookCover, title, author);
@@ -263,5 +352,20 @@ public class MainController {
     public void refreshLibrary() {
         clearLibraryPane();
         loadLibrary(this.consoleInterface.getSelectedLibrary());
+    }
+
+    private String shortenName(String fullname) {
+        StringBuilder newName = new StringBuilder();
+        String[] parts = fullname.split(" ");
+
+        for (int i = 0; i < parts.length; i++) {
+            if (i == parts.length-1) {
+                newName.append(parts[i]);
+            } else {
+                newName.append(parts[i].substring(0,1)).append(". ");
+            }
+        }
+
+        return newName.toString();
     }
 }

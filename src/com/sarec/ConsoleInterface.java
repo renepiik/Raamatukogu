@@ -85,6 +85,7 @@ public class ConsoleInterface {
 
     public void setSelectedLibrary(Library selectedLibrary) {
         this.selectedLibrary = selectedLibrary;
+        this.operationType = OperationType.LIBRARY;
     }
 
     public Book getSelectedBook() {
@@ -93,6 +94,7 @@ public class ConsoleInterface {
 
     public void setSelectedBook(Book selectedBook) {
         this.selectedBook = selectedBook;
+        this.operationType = OperationType.BOOK;
     }
 
     /*
@@ -171,13 +173,33 @@ public class ConsoleInterface {
             String deleteCommand = this.getCommand("Kas te soovite eemaldada raamatukogu '"+this.selectedLibrary.getName()+"'? (jah/ei)");
 
             if (deleteCommand.toLowerCase().equals("jah")) {
-                // kustuta info
-                this.libraries.removeIf(library -> library.getName().equals(this.selectedLibrary.getName()));
+                deleteLibraryWithoutConfirmation();
+            }
+        }
+    }
+
+    public void deleteLibraryWithoutConfirmation() {
+        if (this.operationType == OperationType.LIBRARY) {
+            deleteLibraryFile(this.selectedLibrary);
+            // kustuta info
+            this.libraries.removeIf(library -> library.getName().equals(this.selectedLibrary.getName()));
+            // muuda programmi töörežiim
+            updatePath("", OperationType.DEFAULT);
+            this.selectedLibrary = null;
+        }
+    }
+
+    public void deleteLibraryFile(Library library) {
+        if (this.operationType == OperationType.LIBRARY) {
+            try {
                 // kustuta fail
-                if (Desktop.getDesktop().isSupported(Desktop.Action.MOVE_TO_TRASH)) Desktop.getDesktop().moveToTrash(new File(Vars.libsPath+this.selectedLibrary.getName()+".csv"));
-                // muuda programmi töörežiim
-                updatePath("", OperationType.DEFAULT);
-                this.selectedLibrary = null;
+                if (Desktop.getDesktop().isSupported(Desktop.Action.MOVE_TO_TRASH)) {
+                    Desktop.getDesktop().moveToTrash(new File(Vars.libsPath+library.getName()+".csv"));
+                    System.out.println("Fail "+Vars.libsPath+library.getName()+".csv"+" kustutatud");
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("Faili ei leitud ning ei saadud kustutada");
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -185,24 +207,31 @@ public class ConsoleInterface {
     public void updateLibrary() {
         if (this.operationType == OperationType.LIBRARY) {
             String newName = this.getCommand("Sisesta uus nimi raamatukogule: ");
+            updateLibraryName(newName);
+        }
+    }
 
-            boolean canChange = true;
+    public void updateLibraryName(String newName) {
+        boolean canChange = true;
 
-            // check if library with same name already exists
-            for (Library library : this.libraries) {
-                if (library.getName().equals(newName)) {
-                    canChange = false;
-                    break;
-                }
+        // check if library with same name already exists
+        for (Library library : this.libraries) {
+            if (library.getName().equals(newName)) {
+                canChange = false;
+                break;
             }
+        }
 
-            if (canChange) {
-                this.selectedLibrary.setName(newName);
-                this.updatePath(this.selectedLibrary.getName(), OperationType.LIBRARY);
-                System.out.println("Raamatukogu uus nimi on "+newName);
-            } else {
-                System.out.println("Tekkis tõrge, sellise nimega raamatukogu on juba olemas.");
-            }
+        if (canChange) {
+            // delete old library file
+            deleteLibraryFile(this.selectedLibrary);
+
+            // update name
+            this.selectedLibrary.setName(newName);
+            this.updatePath(this.selectedLibrary.getName(), OperationType.LIBRARY);
+            System.out.println("Raamatukogu uus nimi on "+newName);
+        } else {
+            System.out.println("Tekkis tõrge, sellise nimega raamatukogu on juba olemas.");
         }
     }
 
