@@ -15,7 +15,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 public class MainController {
@@ -130,6 +133,56 @@ public class MainController {
             newLibAken.setTitle("Uus Raamatukogu");
             newLibAken.show();
         });
+        //Uue Raamatukogu loomine
+
+
+        //Infonupp
+        SecondaryButton infoNupp = new SecondaryButton("Juhis");
+        infoNupp.getStyleClass().add("infoNupp");
+        nimekiri.getChildren().addAll(new Label(), infoNupp);
+
+        infoNupp.setOnMouseClicked(me -> {
+
+            String jutt = "Tere tulemast kasutama raamatukogude haldamise tarkvara! \n" +
+                          "\n" +
+                          "Sellega programmiga on võmalik:\n" +
+                          "     luua uusi raamatukogusid;\n" +
+                          "     muuta ja kustutada olemasolevaid raamatukogusid;\n" +
+                          "     luua raamatukokku uusi raamatuid;\n" +
+                          "     olemasolevate raamatute andmeid uuendada\n" +
+                          "     ja raamatuid kustutada.\n" +
+                          "\n" +
+                          "Programm töötab Windows operatsioonisüsteemis, töökindlus Linux ja \n" +
+                          " macOS-tüüpi süsteemidel ei ole garanteeritud.\n" +
+                          "\n" +
+                          "Kõik programmis hallatavad raamatukogud koos raamatutega asuvad arvuti kasutaja \n" +
+                          " kausta 'Dokumendid' alakaustas 'libs'.\n" +
+                          "Kui mõni raamatukogu programmi töö käigus kustutada, \n" +
+                          " siis see visatakse kasutaja desktopil asuvasse Recycle Bin'i.\n" +
+                          "\n" +
+                          "Meeldivat kasutamist! :)\n" +
+                          "     - Sander ja René."
+                    ;
+
+            Group grupp = new Group();
+            Label read = new Label();
+            read.setText(jutt);
+            grupp.getChildren().add(read);
+
+            read.setLayoutY(5);
+            read.setLayoutX(5);
+
+            Scene stseen = new Scene(grupp);
+            Stage lava = new Stage();
+            lava.setHeight(500);
+            lava.setWidth(500);
+            lava.setTitle("Juhis");
+
+            lava.setScene(stseen);
+            lava.show();
+        });
+        //Infonupp
+
 
         mainBorderPane.setLeft(nimekiri);
 
@@ -183,6 +236,7 @@ public class MainController {
             confirmWindow.show();
         }); // raamatukogu kustutamine
 
+
         // raamatukogu info uuendamine
         updateLibraryButton.setOnMouseClicked(mouseEvent -> {
             Stage updateLibraryStage = new Stage();
@@ -197,23 +251,35 @@ public class MainController {
             pealkiriField.setText(library.getName());
 
             PrimaryButton updateButton = new PrimaryButton("Uuenda");
+
             updateButton.setOnMouseClicked(mouseEvent1 -> {
-                library.setName(pealkiriField.getText());
-                updateLibraryStage.close();
-                clearLibraryPane();
-                displayLibraries(consoleInterface.getLibraries());
-                loadLibrary(library);
-            });
-            updateLibraryScene.setOnKeyPressed(keyEvent -> {
-                if (keyEvent.getCode() == KeyCode.ENTER) {
+                try {
+                    File vanaFail = new File(Vars.libsPath + library.getName() + ".csv");
+                    File uusFail = new File(Vars.libsPath + pealkiriField.getText() + ".csv");
                     library.setName(pealkiriField.getText());
+                    Files.move(vanaFail.toPath(),uusFail.toPath());
                     updateLibraryStage.close();
                     clearLibraryPane();
                     displayLibraries(consoleInterface.getLibraries());
                     loadLibrary(library);
+                } catch (IOException e) {
+                    System.out.println("Tekkis tõrge, ei suudetud raamatukogu nime muuta.");;
                 }
             });
-
+            updateLibraryScene.setOnKeyPressed(keyEvent -> {
+                try {
+                    File vanaFail = new File(Vars.libsPath + library.getName() + ".csv");
+                    File uusFail = new File(Vars.libsPath + pealkiriField.getText() + ".csv");
+                    library.setName(pealkiriField.getText());
+                    Files.move(vanaFail.toPath(),uusFail.toPath());
+                    updateLibraryStage.close();
+                    clearLibraryPane();
+                    displayLibraries(consoleInterface.getLibraries());
+                    loadLibrary(library);
+                } catch (IOException e) {
+                    System.out.println("Tekkis tõrge, ei suudetud raamatukogu nime muuta.");;
+                }
+            });
 
             root.getChildren().addAll(kirjeldus, pealkiriField, updateButton);
 
@@ -293,6 +359,7 @@ public class MainController {
                         booksFlowPane.getChildren().add(vBook);
                     } catch (Exception e) {
                         System.out.println("Tekkis tõrge, Raamtu loomisega ei saadud hakkama.");
+                        lisatudLabel.setText("Tekkis tõrge, Raamtu loomisega ei saadud hakkama.");
                     }
                 }
             });
@@ -360,7 +427,7 @@ public class MainController {
             String s = tykid[i];
             if (!s.contains("-")) {
                 // kui nimi ei sisalda sidekriipsu
-                nimi.append(s.charAt(0)+". ");
+                nimi.append(s.charAt(0)).append(". ");
             }
             else {
                 // kui nimi sisaldab sidekriipsu, tükeldab selle uuesti
@@ -370,9 +437,9 @@ public class MainController {
                 // nt Arno-Joosep-Kiir -> A-J-K.
                 nimi.append(" ");
                 for (int j = 0; j < uus.length - 1; j++) {
-                    nimi.append(uus[j].charAt(0) + "-");
+                    nimi.append(uus[j].charAt(0)).append("-");
                 }
-                nimi.append(uus[uus.length - 1].charAt(0) + ". ");
+                nimi.append(uus[uus.length - 1].charAt(0)).append(". ");
             }
         }
 
