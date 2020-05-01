@@ -267,17 +267,19 @@ public class MainController {
                 }
             });
             updateLibraryScene.setOnKeyPressed(keyEvent -> {
-                try {
-                    File vanaFail = new File(Vars.libsPath + library.getName() + ".csv");
-                    File uusFail = new File(Vars.libsPath + pealkiriField.getText() + ".csv");
-                    library.setName(pealkiriField.getText());
-                    Files.move(vanaFail.toPath(),uusFail.toPath());
-                    updateLibraryStage.close();
-                    clearLibraryPane();
-                    displayLibraries(consoleInterface.getLibraries());
-                    loadLibrary(library);
-                } catch (IOException e) {
-                    System.out.println("Tekkis tõrge, ei suudetud raamatukogu nime muuta.");;
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    try {
+                        File vanaFail = new File(Vars.libsPath + library.getName() + ".csv");
+                        File uusFail = new File(Vars.libsPath + pealkiriField.getText() + ".csv");
+                        library.setName(pealkiriField.getText());
+                        Files.move(vanaFail.toPath(),uusFail.toPath());
+                        updateLibraryStage.close();
+                        clearLibraryPane();
+                        displayLibraries(consoleInterface.getLibraries());
+                        loadLibrary(library);
+                    } catch (IOException e) {
+                        System.out.println("Tekkis tõrge, ei suudetud raamatukogu nime muuta.");;
+                    }
                 }
             });
 

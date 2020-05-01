@@ -9,6 +9,7 @@ public class Vars {
     // kaust, kus hoitakse raamatukogude infot
     public static String libsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath()+"\\libs\\";
 
+    //Front-end
     public static String ButtonColor = "#6246ea";
     public static Paint ButtonPaint = Color.web(ButtonColor);
 
