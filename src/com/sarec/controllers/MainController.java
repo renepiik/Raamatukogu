@@ -1,27 +1,20 @@
 package com.sarec.controllers;
-
 import com.sarec.ConsoleInterface;
 import com.sarec.Vars;
 import com.sarec.components.*;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import javax.swing.text.LabelView;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -354,18 +347,35 @@ public class MainController {
         loadLibrary(this.consoleInterface.getSelectedLibrary());
     }
 
-    private String shortenName(String fullname) {
-        StringBuilder newName = new StringBuilder();
-        String[] parts = fullname.split(" ");
+    public static String shortenName(String taisnimi) {
+        String[] tykid = taisnimi.split(" ");
 
-        for (int i = 0; i < parts.length; i++) {
-            if (i == parts.length-1) {
-                newName.append(parts[i]);
-            } else {
-                newName.append(parts[i].substring(0,1)).append(". ");
+        // perekonnanimi on failis alati rea viimane
+        String perenimi = tykid[tykid.length-1];
+
+        // eesnimi on esialgu tühi, pikkuseks on täisnime pikkus, sest sellest pikemaks ta minna ei saa
+        StringBuilder nimi = new StringBuilder(taisnimi.length());
+
+        for (int i = 0; i < tykid.length-1; i++) { // iga sõna nimes, v.a. perekonnanimi
+            String s = tykid[i];
+            if (!s.contains("-")) {
+                // kui nimi ei sisalda sidekriipsu
+                nimi.append(s.charAt(0)+". ");
+            }
+            else {
+                // kui nimi sisaldab sidekriipsu, tükeldab selle uuesti
+                String[] uus = s.split("-");
+
+                // for-tsükli tõttu peaks töötama ka mitme sidekriipsu korral
+                // nt Arno-Joosep-Kiir -> A-J-K.
+                nimi.append(" ");
+                for (int j = 0; j < uus.length - 1; j++) {
+                    nimi.append(uus[j].charAt(0) + "-");
+                }
+                nimi.append(uus[uus.length - 1].charAt(0) + ". ");
             }
         }
 
-        return newName.toString();
+        return nimi.append(perenimi).toString();
     }
 }

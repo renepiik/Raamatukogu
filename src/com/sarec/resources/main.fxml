@@ -31,8 +31,7 @@
         </HBox>
     </fx:define>
 
-    <center>
-    </center>
+    <center/>
 
     <left/>
 </BorderPane>

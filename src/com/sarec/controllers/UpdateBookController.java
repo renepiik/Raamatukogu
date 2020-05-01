@@ -1,6 +1,5 @@
 package com.sarec.controllers;
 
-import com.sarec.ConsoleInterface;
 import com.sarec.Vars;
 import com.sarec.components.Book;
 import com.sarec.components.Library;
